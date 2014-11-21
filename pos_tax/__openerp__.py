@@ -49,7 +49,6 @@ Copyright, Author and Licence :
         'pos_rewrite_create_aml',
     ],
     'data': [
-        'data/function.xml',
         'security/ir_model_access_data.yml',
         'view/view.xml'
     ],
