@@ -1,11 +1,10 @@
 # -*- encoding: utf-8 -*-
 ##############################################################################
 #
-#    Point Of Sale - Tax Module for Odoo
-#    Copyright (C) 2014-Today GRAP (http://www.grap.coop)
-#    @author Julien WESTE
+#    Point Of Sale - Tax for Odoo
+#    Copyright (C) 2014 GRAP (http://www.grap.coop)
 #    @author Sylvain LE GAL (https://twitter.com/legalsylvain)
-
+#
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
 #    published by the Free Software Foundation, either version 3 of the
@@ -21,5 +20,8 @@
 #
 ##############################################################################
 
-from . import pos_order
-from . import pos_order_line
+from . import test_pos_tax
+
+fast_suite = [
+    test_pos_tax,
+]

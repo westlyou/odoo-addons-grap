@@ -23,14 +23,39 @@
 
 {
     'name': 'Point Of Sale - Tax',
-    'version': '0.1',
+    'version': '1.0',
+    'summary': 'Manage Taxes in Point Of Sale Module',
     'category': 'Point of Sale',
     'description': """
-Manage Correctly The Taxes in Point Of Sale Module
-==================================================
+Manage Taxes in Point Of Sale Module
+====================================
 
 Description:
 ------------
+* 
+
+Technical Description:
+----------------------
+Model pos.order.line:
+    * Add a field: 'tax_ids', m2m('account.tax') (as in sale.order.line)
+    * Add a field: 'amount_subtotal_excl' (as in sale.order.line)
+
+
+Fixes:
+------
+* This module Fixes the following bug you will have without it:
+    * Bug 1: draft entries:
+        * Take a product with VAT 5.5%;
+        * Create a POS and sale it;
+        * Change the VAT of the product to 20%;
+        * Close the session;
+        * The entry generated is incorrected (unbalanced);
+    * Illegal Receipt:
+        * In many Countries the receipt can not be a proof of purchase,
+          if taxes are not listed explicitely;
+
+Old Description:
+----------------
 Store the taxes in pos_orders like for sale_orders so that the created account
 moves keep the good tax even if the product is changed between the sale and the
 session closure.
@@ -46,10 +71,12 @@ Copyright, Author and Licence :
     """,
     'depends': [
         'point_of_sale',
-        'pos_rewrite_create_aml',
     ],
     'data': [
-        'security/ir_model_access_data.yml',
         'view/view.xml'
+    ],
+    'demo': [
+        'demo/account_tax.yml',
+        'demo/product_product.yml',
     ],
 }
