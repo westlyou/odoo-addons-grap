@@ -32,11 +32,11 @@ class Test(TransactionCase):
 #        # Get Registries
         self.imd_obj = self.registry('ir.model.data')
         self.rit_obj = self.registry('res.integrated.trade')
+        self.rc_obj = self.registry('res.company')
 
         # Get ids from xml_ids
-        self.integraded_trade_id = self.imd_obj.get_object_reference(
-            self.cr, self.uid,
-            'integrated_trade_base', 'integrated_trade')[1]
+        self.integrated_trade_id = self.imd_obj.get_object_reference(
+            self.cr, self.uid, 'integrated_trade_base', 'integrated_trade')[1]
         self.customer_company_id = self.imd_obj.get_object_reference(
             self.cr, self.uid,
             'integrated_trade_base', 'customer_company')[1]
@@ -54,7 +54,7 @@ class Test(TransactionCase):
             'customer_company_id': self.supplier_company_id,
             'supplier_company_id': self.customer_company_id,
         })
-        old_rit = self.rit_obj.browse(cr, uid, self.integraded_trade_id)
+        old_rit = self.rit_obj.browse(cr, uid, self.integrated_trade_id)
         new_rit = self.rit_obj.browse(cr, uid, rit_id)
 
         self.assertEqual(
@@ -64,3 +64,17 @@ class Test(TransactionCase):
         self.assertEqual(
             old_rit.supplier_partner_id.id, new_rit.customer_partner_id.id,
             "Create a Reverse Integrated Trade must reuse existing supplier.")
+
+    # Test Section
+    def test_02_update_company_update_partner(self):
+        """[Functional Test] Check if update company data change the data
+        of the partner associated"""
+        cr, uid = self.cr, self.uid
+        new_street = 'NEW STREET'
+        self.rc_obj.write(cr, uid, [self.customer_company_id], {
+            'street': new_street})
+        rit = self.rit_obj.browse(cr, uid, self.integrated_trade_id)
+
+        self.assertEqual(
+            rit.supplier_partner_id.street, new_street,
+            "Update a company must change the associated partner.")
