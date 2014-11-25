@@ -20,24 +20,15 @@
 #
 ##############################################################################
 
-- !record {model: res.users, id: base.user_root}:
-    company_ids:
-        - base.main_company
-        - customer_company
-        - supplier_company
+from openerp.osv import fields
+from openerp.osv.orm import Model
 
-- !record {model: res.users, id: integrated_customer_user}:
-    name: Integrated Customer User
-    login: integrated_customer
-    password: demo
-    company_id: customer_company
-    company_ids:
-        - customer_company
 
-- !record {model: res.users, id: integrated_supplier_user}:
-    name: Integrated Supplier User
-    login: integrated_supplier
-    password: demo
-    company_id: supplier_company
-    company_ids:
-        - supplier_company
+class product_supplierinfo(Model):
+    _inherit = 'product.supplierinfo'
+
+    _columns = {
+        'supplier_product_id' : fields.many2one(
+            'product.product',
+            'Product in the Supplier Catalog'),
+        }

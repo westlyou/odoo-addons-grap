@@ -20,24 +20,9 @@
 #
 ##############################################################################
 
-- !record {model: res.users, id: base.user_root}:
-    company_ids:
-        - base.main_company
-        - customer_company
-        - supplier_company
+from . import test
 
-- !record {model: res.users, id: integrated_customer_user}:
-    name: Integrated Customer User
-    login: integrated_customer
-    password: demo
-    company_id: customer_company
-    company_ids:
-        - customer_company
 
-- !record {model: res.users, id: integrated_supplier_user}:
-    name: Integrated Supplier User
-    login: integrated_supplier
-    password: demo
-    company_id: supplier_company
-    company_ids:
-        - supplier_company
+fast_suite = [
+    test,
+]

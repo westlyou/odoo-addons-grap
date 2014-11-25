@@ -1,7 +1,7 @@
 # -*- encoding: utf-8 -*-
 ##############################################################################
 #
-#    Integrated Trade - Base module for OpenERP
+#    Integrated Trade - Product module for OpenERP
 #    Copyright (C) 2014-Today GRAP (http://www.grap.coop)
 #    @author Sylvain LE GAL (https://twitter.com/legalsylvain)
 #
@@ -19,25 +19,38 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
+{
+    'name': 'Integrated Trade - Product',
+    'version': '0.1',
+    'category': 'Purchase',
+    'description': """
+Module for Integrated Trade for Purchase Module
+===============================================
 
-- !record {model: res.users, id: base.user_root}:
-    company_ids:
-        - base.main_company
-        - customer_company
-        - supplier_company
+Features:
+---------
+    *
 
-- !record {model: res.users, id: integrated_customer_user}:
-    name: Integrated Customer User
-    login: integrated_customer
-    password: demo
-    company_id: customer_company
-    company_ids:
-        - customer_company
-
-- !record {model: res.users, id: integrated_supplier_user}:
-    name: Integrated Supplier User
-    login: integrated_supplier
-    password: demo
-    company_id: supplier_company
-    company_ids:
-        - supplier_company
+Copyright, Authors and Licence:
+-------------------------------
+    * Copyright: 2014, GRAP: Groupement Régional Alimentaire de Proximité;
+    * Author:
+        * Sylvain LE GAL (https://twitter.com/legalsylvain);
+    * Licence: AGPL-3 (http://www.gnu.org/licenses/);""",
+    'author': 'GRAP',
+    'website': 'http://www.grap.coop',
+    'license': 'AGPL-3',
+    'depends': [
+        'integrated_trade_base',
+        'product',
+    ],
+    'demo': [
+        'demo/product_product.yml',
+    ],
+    'data': [
+        'security/ir_model_access.yml',
+        'view/view.xml',
+        'view/action.xml',
+        'view/menu.xml',
+    ],
+}

@@ -2,7 +2,7 @@
 ##############################################################################
 #
 #    Integrated Trade - Base module for OpenERP
-#    Copyright (C) 2014-Today GRAP (http://www.grap.coop)
+#    Copyright (C) 2013-2014 GRAP (http://www.grap.coop)
 #    @author Sylvain LE GAL (https://twitter.com/legalsylvain)
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -20,24 +20,11 @@
 #
 ##############################################################################
 
-- !record {model: res.users, id: base.user_root}:
-    company_ids:
-        - base.main_company
-        - customer_company
-        - supplier_company
-
-- !record {model: res.users, id: integrated_customer_user}:
-    name: Integrated Customer User
-    login: integrated_customer
-    password: demo
-    company_id: customer_company
-    company_ids:
-        - customer_company
-
-- !record {model: res.users, id: integrated_supplier_user}:
-    name: Integrated Supplier User
-    login: integrated_supplier
-    password: demo
-    company_id: supplier_company
-    company_ids:
-        - supplier_company
+- !record {model: ir.model.access, id: product_integrated_trade_catalog_user_access}:
+    group_id: integrated_trade_base.integrated_trade_user
+    model_id: model_product_integrated_trade_catalog
+    name: Integrated Trade Products Catalog - User
+    perm_read: true
+    perm_create: false
+    perm_write: write
+    perm_unlink: false

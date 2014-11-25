@@ -31,6 +31,12 @@ Features :
     * Add a New Model Integrated Trade that define that two company can realize
       purchases and sales between them;
 
+Demo Data:
+----------
+    * In demo mode, the module creates two new companies, and two users:
+        * A supplier user: login: integrated_supplier // demo
+        * A customer user: login: integrated_customer // demo
+
 Copyright, Authors and Licence:
 -------------------------------
     * Copyright: 2014, GRAP: Groupement Régional Alimentaire de Proximité;
@@ -44,8 +50,9 @@ Copyright, Authors and Licence:
         'base',
     ],
     'demo': [
-        'demo/res_groups.yml',
         'demo/res_company.yml',
+        'demo/res_users.yml',
+        'demo/res_groups.yml',
         'demo/res_integrated_trade.yml',
     ],
     'data': [
