@@ -1,7 +1,7 @@
 # -*- encoding: utf-8 -*-
 ##############################################################################
 #
-#    Integrated Trade - Base module for OpenERP
+#    Integrated Trade - Product module for OpenERP
 #    Copyright (C) 2014-Today GRAP (http://www.grap.coop)
 #    @author Sylvain LE GAL (https://twitter.com/legalsylvain)
 #
@@ -31,29 +31,64 @@ class product_integrated_trade_catalog(Model):
     _table = 'product_integrated_trade_catalog'
 
     # Fields Function Section
-    def _get_customer_product_id(self, cr, uid, ids, name, arg, context=None):
-        return {x: None for x in ids}
-
-    def _set_customer_product_id(
-            self, cr, uid, ids, field_name, field_value, arg, context):
+    def _get_product_tmpl_id(self, cr, uid, ids, name, arg, context=None):
+        res = {}
         for pitc in self.browse(cr, uid, ids, context=context):
-            pass
-        #        psi = self.browse(cr, uid, ids, context=context)
-        #        psi.write({'product_uom_stored': field_value})
+            res[pitc.id] = pitc.hidden_product_tmpl_id.id
+        return res
+
+    def _set_product_tmpl_id(
+            self, cr, uid, ids, field_name, field_value, arg, context=None):
+
+        if not type(ids) is list:
+            ids = [ids]
+        for pitc in self.browse(cr, uid, ids, context=context):
+#            self._unlink_customer_product_tmpl(
+#                cr, uid, pitc.hidden_product_tmpl_id, context=context)
+#            self._unlink_supplier_product(
+#                cr, uid, pitc.supplier_product_id, context=context)
+            self._link_product(
+                cr, uid, pitc, field_value,
+                context=context)
         return True
+
+    def _link_product(
+            self, cr, uid, pitc,
+            new_product_tmpl_id, context=None):
+        psi_obj = self.pool['product.supplierinfo']
+        psi_obj.create(cr, uid, {
+            'name': pitc.supplier_partner_id.id,
+            'product_name': pitc.supplier_product_name,
+            'product_code': pitc.supplier_product_default_code,
+            'min_qty': 1,   # TODO FIXME
+            'product_id': new_product_tmpl_id,
+            'company_id': pitc.customer_company_id.id,
+        }, context=context)
+
+#    def _unlink_customer_product_tmpl(
+#            self, cr, uid, customer_product_id, context=None):
+#        # TODO
+#        pass
+
+#    def _unlink_supplier_product(
+#            self, cr, uid, supplier_product_id, context=None):
+#        # TODO
+#        pass
 
     # Column Section
     _columns = {
-        'product_id': fields.function(
-            _get_customer_product_id, fnct_inv=_set_customer_product_id,
+        'product_tmpl_id': fields.function(
+            _get_product_tmpl_id, fnct_inv=_set_product_tmpl_id,
             string='Product', type='many2one',
-            relation='product.product'),
+            relation='product.template'),
         'supplier_product_name': fields.char(
             'Supplier Product Name', readonly='True'),
         'supplier_product_default_code': fields.char(
             'Supplier Product Code', readonly='True'),
         'supplier_partner_name': fields.char(
             'Supplier Partner Name', readonly='True'),
+        'hidden_product_tmpl_id': fields.many2one(
+            'product.template', 'Product (Technical Field)', readonly='True'),
         'supplier_product_id': fields.many2one(
             'product.product', 'Supplier Product', readonly='True'),
         'supplier_company_id': fields.many2one(
@@ -70,20 +105,23 @@ class product_integrated_trade_catalog(Model):
         cr.execute("""
 CREATE OR REPLACE VIEW %s AS (
         SELECT
-            pp.id as id,
-            pp.id as supplier_product_id,
-            pt.name as supplier_product_name,
-            pp.default_code as supplier_product_default_code,
+            s_pp.id as id,
+            s_pp.id as supplier_product_id,
+            s_pt.name as supplier_product_name,
+            s_pp.default_code as supplier_product_default_code,
+            c_psi.product_id as hidden_product_tmpl_id,
             rit.supplier_company_id,
             rit.supplier_partner_id,
             rit.customer_company_id,
             rit.customer_partner_id,
-            rp.name as supplier_partner_name
-        FROM product_product pp
-        INNER JOIN product_template pt
-            ON pp.product_tmpl_id = pt.id
+            c_rp.name as supplier_partner_name
+        FROM product_product s_pp
+        INNER JOIN product_template s_pt
+            ON s_pp.product_tmpl_id = s_pt.id
         RIGHT JOIN res_integrated_trade rit
-            ON pt.company_id = rit.supplier_company_id
-        INNER JOIN res_partner rp
-            ON rit.supplier_partner_id = rp.id
+            ON s_pt.company_id = rit.supplier_company_id
+        INNER JOIN res_partner c_rp
+            ON rit.supplier_partner_id = c_rp.id
+        LEFT JOIN product_supplierinfo c_psi
+            ON c_psi.supplier_product_id = s_pp.id
 )""" % (self._table))

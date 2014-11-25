@@ -1,8 +1,8 @@
 # -*- encoding: utf-8 -*-
 ##############################################################################
 #
-#    Integrated Trade - Product module for OpenERP
-#    Copyright (C) 2013-2014 GRAP (http://www.grap.coop)
+#    Integrated Trade - Purchase & Sale module for OpenERP
+#    Copyright (C) 2014-Today GRAP (http://www.grap.coop)
 #    @author Sylvain LE GAL (https://twitter.com/legalsylvain)
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -20,20 +20,9 @@
 #
 ##############################################################################
 
-- !record {model: ir.model.access, id: product_integrated_trade_catalog_user_access}:
-    group_id: integrated_trade_base.integrated_trade_user
-    model_id: model_product_integrated_trade_catalog
-    name: Integrated Trade Products Catalog - User
-    perm_read: true
-    perm_create: false
-    perm_write: write
-    perm_unlink: false
+from . import test
 
-- !record {model: ir.model.access, id: product_supplier_info_sale_manager_access}:
-    group_id: base.group_sale_manager
-    model_id: model_product_supplierinfo
-    name: Product Supplier Info - Sale Manager
-    perm_read: true
-    perm_create: true
-    perm_write: true
-    perm_unlink: true
+
+fast_suite = [
+    test,
+]

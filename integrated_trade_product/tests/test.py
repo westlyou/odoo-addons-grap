@@ -1,7 +1,7 @@
 # -*- encoding: utf-8 -*-
 ##############################################################################
 #
-#    Integrated Trade - Base module for OpenERP
+#    Integrated Trade - Product module for OpenERP
 #    Copyright (C) 2014-Today GRAP (http://www.grap.coop)
 #    @author Sylvain LE GAL (https://twitter.com/legalsylvain)
 #
@@ -50,7 +50,7 @@ class Test(TransactionCase):
         pitc_id = self.pitc_obj.search(cr, uid, [
             ('supplier_product_id', '=', self.supplier_apple_id),
         ])
-        self.pitc_obj.write(cr, uid, [pitc_id], {
+        self.pitc_obj.write(cr, uid, pitc_id, {
             'product_id': self.customer_apple_id})
         pp = self.pp_obj.browse(
             cr, uid, self.customer_apple_id)

@@ -24,8 +24,8 @@
     'version': '0.1',
     'category': 'Purchase',
     'description': """
-Module for Integrated Trade for Purchase Module
-===============================================
+Module for Integrated Trade for Product Module
+==============================================
 
 Features:
 ---------
@@ -53,4 +53,5 @@ Copyright, Authors and Licence:
         'view/action.xml',
         'view/menu.xml',
     ],
+    'auto_install': True,
 }
