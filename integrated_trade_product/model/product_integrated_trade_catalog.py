@@ -36,6 +36,8 @@ class product_integrated_trade_catalog(Model):
 
     def _set_customer_product_id(
             self, cr, uid, ids, field_name, field_value, arg, context):
+        for pitc in self.browse(cr, uid, ids, context=context):
+            pass
         #        psi = self.browse(cr, uid, ids, context=context)
         #        psi.write({'product_uom_stored': field_value})
         return True
@@ -60,7 +62,7 @@ class product_integrated_trade_catalog(Model):
             'res.partner', 'Supplier Partner', readonly='True'),
         'customer_company_id': fields.many2one(
             'res.company', 'Customer Company', readonly='True'),
-        }
+    }
 
     # View Section
     def init(self, cr):
