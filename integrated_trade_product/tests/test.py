@@ -20,16 +20,16 @@
 #
 ##############################################################################
 
-from openerp.tests.common import TransactionCase
+# from openerp.tests.common import TransactionCase
 
 
-#class Test(TransactionCase):
+# class Test(TransactionCase):
 
 #    # Overload Section
 #    def setUp(self):
 #        super(Test, self).setUp()
 
-##        # Get Registries
+#        # Get Registries
 #        self.imd_obj = self.registry('ir.model.data')
 #        self.rit_obj = self.registry('res.integrated.trade')
 #        self.rc_obj = self.registry('res.company')

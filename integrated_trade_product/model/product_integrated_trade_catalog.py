@@ -36,8 +36,8 @@ class product_integrated_trade_catalog(Model):
 
     def _set_customer_product_id(
             self, cr, uid, ids, field_name, field_value, arg, context):
-#        psi = self.browse(cr, uid, ids, context=context)
-#        psi.write({'product_uom_stored': field_value})
+        #        psi = self.browse(cr, uid, ids, context=context)
+        #        psi.write({'product_uom_stored': field_value})
         return True
 
     # Column Section

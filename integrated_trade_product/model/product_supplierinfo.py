@@ -28,7 +28,7 @@ class product_supplierinfo(Model):
     _inherit = 'product.supplierinfo'
 
     _columns = {
-        'supplier_product_id' : fields.many2one(
+        'supplier_product_id': fields.many2one(
             'product.product',
             'Product in the Supplier Catalog'),
         }
