@@ -59,10 +59,10 @@ class product_integrated_trade_catalog(Model):
             customer_company_id, context=None):
         pp_obj = self.pool['product.product']
         rp_obj = self.pool['res.partner']
-        rp = rp_obj.browse(cr, SUPERUSER_ID, supplier_partner_id,
-            context=context)
-        pp = pp_obj.browse(cr, SUPERUSER_ID, supplier_product_id,
-            context=context)
+        rp = rp_obj.browse(
+            cr, SUPERUSER_ID, supplier_partner_id, context=context)
+        pp = pp_obj.browse(
+            cr, SUPERUSER_ID, supplier_product_id, context=context)
         return {
             'min_qty': 0.0,
             'name': rp.id,
@@ -82,10 +82,8 @@ class product_integrated_trade_catalog(Model):
         vals['product_id'] = new_product_tmpl_id
         psi_obj.create(cr, uid, vals, context=context)
 
-
     def _unlink_supplier_product(
             self, cr, uid, supplier_product_ids, context=None):
-        
         psi_obj = self.pool['product.supplierinfo']
         res = psi_obj.search(cr, uid, [
             ('supplier_product_id', 'in', supplier_product_ids),
@@ -103,12 +101,11 @@ class product_integrated_trade_catalog(Model):
             Please Overload this function to add extra constraints, for
             exemple, disable the possibility to unlink a product if there
             is pending sale / purchase of that product."""
-            psi_obj = self.pool['product.supplierinfo']
-            res = psi_obj.search(cr, uid, [
-            ('product_id', 'in', customer_product_ids)], context=context)
-            psi_obj.unlink(cr, uid, res, context=context)
-            return len(res)
-
+        psi_obj = self.pool['product.supplierinfo']
+        res = psi_obj.search(cr, uid, [
+        ('product_id', 'in', customer_product_ids)], context=context)
+        psi_obj.unlink(cr, uid, res, context=context)
+        return len(res)
 
     # Column Section
     _columns = {
