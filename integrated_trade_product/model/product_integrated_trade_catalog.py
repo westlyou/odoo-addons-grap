@@ -39,19 +39,21 @@ class product_integrated_trade_catalog(Model):
 
     def _set_product_tmpl_id(
             self, cr, uid, ids, field_name, field_value, arg, context=None):
-
         if not type(ids) is list:
             ids = [ids]
         for pitc in self.browse(cr, uid, ids, context=context):
-#            self._unlink_customer_product_tmpl(
-#                cr, uid, pitc.hidden_product_tmpl_id, context=context)
-#            self._unlink_supplier_product(
-#                cr, uid, pitc.supplier_product_id, context=context)
-            self._link_product(
-                cr, uid, pitc, field_value,
-                context=context)
+            if field_value:
+                self._unlink_customer_product_tmpl(
+                    cr, uid, [field_value], context=context)
+            self._unlink_supplier_product(
+                cr, uid, [pitc.supplier_product_id.id], context=context)
+            if field_value:
+                self._link_product(
+                    cr, uid, pitc, field_value,
+                    context=context)
         return True
 
+    # Private Section
     def _link_product(
             self, cr, uid, pitc,
             new_product_tmpl_id, context=None):
@@ -60,20 +62,39 @@ class product_integrated_trade_catalog(Model):
             'name': pitc.supplier_partner_id.id,
             'product_name': pitc.supplier_product_name,
             'product_code': pitc.supplier_product_default_code,
-            'min_qty': 1,   # TODO FIXME
+            'min_qty': 0.0,
             'product_id': new_product_tmpl_id,
             'company_id': pitc.customer_company_id.id,
+            'supplier_product_id': pitc.supplier_product_id.id,
         }, context=context)
 
-#    def _unlink_customer_product_tmpl(
-#            self, cr, uid, customer_product_id, context=None):
-#        # TODO
-#        pass
 
-#    def _unlink_supplier_product(
-#            self, cr, uid, supplier_product_id, context=None):
-#        # TODO
-#        pass
+    def _unlink_supplier_product(
+            self, cr, uid, supplier_product_ids, context=None):
+        
+        psi_obj = self.pool['product.supplierinfo']
+        res = psi_obj.search(cr, uid, [
+            ('supplier_product_id', 'in', supplier_product_ids),
+            ], context=context)
+        psi_lst = psi_obj.browse(cr, uid, res, context=context)
+        product_tmpl_ids = [x.product_id.id for x in psi_lst]
+        self._unlink_customer_product_tmpl(
+            cr, uid, product_tmpl_ids, context=context)
+
+    def _unlink_customer_product_tmpl(
+            self, cr, uid, customer_product_ids, context=None):
+            """ FIXME: Maybe better to say to overload
+            product_supplierinfo.unlink()
+            Function to unlink a product associated to an supplier Product.
+            Please Overload this function to add extra constraints, for
+            exemple, disable the possibility to unlink a product if there
+            is pending sale / purchase of that product."""
+            psi_obj = self.pool['product.supplierinfo']
+            res = psi_obj.search(cr, uid, [
+            ('product_id', 'in', customer_product_ids)], context=context)
+            psi_obj.unlink(cr, uid, res, context=context)
+            return len(res)
+
 
     # Column Section
     _columns = {

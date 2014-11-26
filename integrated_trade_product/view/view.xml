@@ -24,8 +24,8 @@
         <record id="view_product_integrated_trade_catalog_tree" model="ir.ui.view">
             <field name="model">product.integrated.trade.catalog</field>
             <field name="arch" type="xml">
-                <tree string="Integrated Trade - Products Catalog" editable="top">
-                    <field name="product_tmpl_id"/>
+                <tree string="Integrated Trade - Products Catalog">
+                    <field name="product_tmpl_id" readonly="1"/>
                     <field name="supplier_product_default_code"/>
                     <field name="supplier_product_name"/>
                     <field name="supplier_partner_name"/>

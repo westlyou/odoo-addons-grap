@@ -45,6 +45,7 @@ Copyright, Authors and Licence:
         'stock',
     ],
     'demo': [
+        'demo/res_groups.yml',
     ],
     'data': [
     ],

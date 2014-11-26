@@ -35,6 +35,9 @@ class Test(TransactionCase):
         self.pp_obj = self.registry('product.product')
 
         # Get ids from xml_ids
+        self.supplier_banana_id = self.imd_obj.get_object_reference(
+            self.cr, self.uid,
+            'integrated_trade_product', 'product_supplier_banana')[1]
         self.supplier_apple_id = self.imd_obj.get_object_reference(
             self.cr, self.uid,
             'integrated_trade_product', 'product_supplier_apple')[1]
@@ -47,14 +50,32 @@ class Test(TransactionCase):
         """[Functional Test] Check if associate a product create a
         product supplierinfo"""
         cr, uid = self.cr, self.uid
+        # Associate with bad product (customer apple - supplier banana)
+        pitc_id = self.pitc_obj.search(cr, uid, [
+            ('supplier_product_id', '=', self.supplier_banana_id),
+        ])
+        self.pitc_obj.write(cr, uid, pitc_id, {
+            'product_tmpl_id': self.customer_apple_id})
+        pp_c_apple = self.pp_obj.browse(
+            cr, uid, self.customer_apple_id)
+        self.assertEqual(
+            len(pp_c_apple.seller_ids), 1,
+            """Associate a Customer Product to a Supplier Product must"""
+            """ create a Product Supplierinfo.""")
+        # Reassociate with correct product (customer apple - supplier apple)
         pitc_id = self.pitc_obj.search(cr, uid, [
             ('supplier_product_id', '=', self.supplier_apple_id),
         ])
         self.pitc_obj.write(cr, uid, pitc_id, {
-            'product_id': self.customer_apple_id})
-        pp = self.pp_obj.browse(
+            'product_tmpl_id': self.customer_apple_id})
+        pp_c_apple = self.pp_obj.browse(
             cr, uid, self.customer_apple_id)
         self.assertEqual(
-            len(pp.seller_ids), 1,
-            """Associate a Customer Product to a Supplier Product must"""
-            """ create a Product Supplierinfo.""")
+            len(pp_c_apple.seller_ids), 1,
+            """Associate a still associated Customer Product to a Supplier"""
+            """ Product must delete the previous association.""")
+        self.assertEqual(
+            pp_c_apple.seller_ids[0].supplier_product_id.id,
+            self.supplier_apple_id,
+            """Associate a still associated Customer Product to a new"""
+            """ Supplier Product must create a new association.""")
