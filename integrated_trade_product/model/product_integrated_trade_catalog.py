@@ -95,15 +95,15 @@ class product_integrated_trade_catalog(Model):
 
     def _unlink_customer_product_tmpl(
             self, cr, uid, customer_product_ids, context=None):
-            """ FIXME: Maybe better to say to overload
-            product_supplierinfo.unlink()
-            Function to unlink a product associated to an supplier Product.
-            Please Overload this function to add extra constraints, for
-            exemple, disable the possibility to unlink a product if there
-            is pending sale / purchase of that product."""
+        """ FIXME: Maybe better to say to overload
+        product_supplierinfo.unlink()
+        Function to unlink a product associated to an supplier Product.
+        Please Overload this function to add extra constraints, for
+        exemple, disable the possibility to unlink a product if there
+        is pending sale / purchase of that product."""
         psi_obj = self.pool['product.supplierinfo']
         res = psi_obj.search(cr, uid, [
-        ('product_id', 'in', customer_product_ids)], context=context)
+            ('product_id', 'in', customer_product_ids)], context=context)
         psi_obj.unlink(cr, uid, res, context=context)
         return len(res)
 
