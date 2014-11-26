@@ -20,6 +20,7 @@
 #
 ##############################################################################
 
+from openerp import SUPERUSER_ID
 from openerp import tools
 from openerp.osv import fields
 from openerp.osv.orm import Model
@@ -53,20 +54,33 @@ class product_integrated_trade_catalog(Model):
                     context=context)
         return True
 
+    def _prepare_product_supplierinfo(
+            self, cr, uid, supplier_partner_id, supplier_product_id,
+            customer_company_id, context=None):
+        pp_obj = self.pool['product.product']
+        rp_obj = self.pool['res.partner']
+        rp = rp_obj.browse(cr, SUPERUSER_ID, supplier_partner_id,
+            context=context)
+        pp = pp_obj.browse(cr, SUPERUSER_ID, supplier_product_id,
+            context=context)
+        return {
+            'min_qty': 0.0,
+            'name': rp.id,
+            'product_name': pp.name,
+            'product_code': pp.default_code,
+            'company_id': customer_company_id,
+            'supplier_product_id': pp.id,
+        }
+
     # Private Section
     def _link_product(
-            self, cr, uid, pitc,
-            new_product_tmpl_id, context=None):
+            self, cr, uid, pitc, new_product_tmpl_id, context=None):
         psi_obj = self.pool['product.supplierinfo']
-        psi_obj.create(cr, uid, {
-            'name': pitc.supplier_partner_id.id,
-            'product_name': pitc.supplier_product_name,
-            'product_code': pitc.supplier_product_default_code,
-            'min_qty': 0.0,
-            'product_id': new_product_tmpl_id,
-            'company_id': pitc.customer_company_id.id,
-            'supplier_product_id': pitc.supplier_product_id.id,
-        }, context=context)
+        vals = self._prepare_product_supplierinfo(
+            cr, uid, pitc.supplier_partner_id.id, pitc.supplier_product_id.id,
+            pitc.customer_company_id.id, context=context)
+        vals['product_id'] = new_product_tmpl_id
+        psi_obj.create(cr, uid, vals, context=context)
 
 
     def _unlink_supplier_product(
