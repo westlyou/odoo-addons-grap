@@ -22,12 +22,33 @@
 
 from openerp.osv import fields
 from openerp.osv.orm import Model
-
+from openerp.addons import decimal_precision as dp
 
 class product_supplierinfo(Model):
     _inherit = 'product.supplierinfo'
 
+    def _get_integrated_price(
+            self, cr, uid, ids, field_name, arg, context=None):
+        res = {}
+        for psi in self.browse(cr, uid, ids, context=context):
+            if psi.supplier_product_id and psi.pricelist_ids:
+                res[psi.id] = psi.pricelist_ids[0].price
+            else:
+                res[psi.id] = 0
+        return res
+
+
     _columns = {
+        'integrated_price': fields.function(
+            _get_integrated_price, string='Unit Price',
+            digits_compute=dp.get_precision('Integrated Product Price'),
+                store={
+                'product.supplierinfo': (
+                    lambda self, cr, uid, ids, context=None: ids,
+                    [
+                        'supplier_product_id',
+                        'pricelist_ids',
+                    ], 10)}),
         'supplier_product_id': fields.many2one(
             'product.product',
             'Product in the Supplier Catalog', selected=True),

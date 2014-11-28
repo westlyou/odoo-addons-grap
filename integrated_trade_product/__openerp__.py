@@ -29,7 +29,14 @@ Module for Integrated Trade for Product Module
 
 Features:
 ---------
-    *
+    * Give the possibility to customer to link a product to a supplier product;
+
+TODO:
+-----
+    * Check uom coherence;
+    * Change product information must change supplierinfo;
+    * Change price information must change supplierinfo;
+    * Change pricelist information must change supplierinfo;
 
 Copyright, Authors and Licence:
 -------------------------------
