@@ -68,11 +68,11 @@ class product_integrated_trade_catalog(Model):
 
     # Public Function
     def update_product(
-            self, cr, uid, pitc_ids, context=None):
+            self, cr, uid, ids, context=None):
         """Call this function to force to update product supplierinfo
         if it is necessary"""
         psi_obj = self.pool['product.supplierinfo']
-        for pitc in self.browse(cr, uid, pitc_ids, context=context):
+        for pitc in self.browse(cr, uid, ids, context=context):
             import pdb; pdb.set_trace()
             psi_obj.unlink(
                 cr, uid, [pitc.hidden_supplierinfo_id.id],

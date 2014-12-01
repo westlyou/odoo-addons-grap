@@ -20,7 +20,25 @@
 #
 ##############################################################################
 
-from . import res_partner
-from . import product_product
-from . import product_supplierinfo
-from . import product_integrated_trade_catalog
+from openerp import SUPERUSER_ID
+from openerp.osv import fields
+from openerp.osv.orm import Model
+
+class res_partner(Model):
+    _inherit = 'res.partner'
+
+    # Public Function
+    def update_all_products_as_customer(self, cr, uid, ids, context=None):
+        """ Update all product.pricelistinfo of products template that are 
+        linked to external products for defined customers"""
+        pitc_obj = self.pool['product.integrated.trade.catalog']
+        pitc_ids = pitc_obj.search(cr, SUPERUSER_ID, [
+            ('customer_partner_id', 'in', ids)], context=context)
+        pitc_obj = self.update_product(cr, uid, pitc_ids, context=context)
+
+# TODO a voir si utile.
+#    def update_all_products_as_supplier(self, cr, uid, ids, context=None):
+#        pitc_obj = self.pool['product.integrated.trade.catalog']
+#        pitc_ids = pitc_obj.search(cr, SUPERUSER_ID, [
+#            ('supplier_partner_id', 'in', ids)], context=context)
+#        pitc_obj = self.update_product(cr, uid, pitc_ids, context=context)
