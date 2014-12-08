@@ -73,13 +73,16 @@ class product_integrated_trade_catalog(Model):
         if it is necessary"""
         psi_obj = self.pool['product.supplierinfo']
         for pitc in self.browse(cr, uid, ids, context=context):
-            import pdb; pdb.set_trace()
-            psi_obj.unlink(
-                cr, uid, [pitc.hidden_supplierinfo_id.id],
-                context=context)
-            pitc._link_product(
-                cr, uid, pitc, pitc.customer_product_tmpl_id.id,
-                context=context)
+            if pitc.hidden_product_tmpl_id.id:
+                psi_ids = psi_obj.search(cr, uid, [
+                    ('supplier_product_id', '=', pitc.supplier_product_id),
+                ], context=context)
+#                psi_obj.unlink(
+#                    cr, uid, [pitc.hidden_supplierinfo_id.id],
+#                    context=context)
+#                pitc._link_product(
+#                    cr, uid, pitc, pitc.customer_product_tmpl_id.id,
+#                    context=context)
 
     # Private Section
     def _link_product(
@@ -145,7 +148,7 @@ class product_integrated_trade_catalog(Model):
         'product_tmpl_id': fields.function(
             _get_product_tmpl_id, fnct_inv=_set_product_tmpl_id,
             string='Product', type='many2one',
-            relation='product.template'),
+            relation='product.template', required=True),
         'customer_purchase_price': fields.float(
             'Customer Purchase Price', readonly=True),
         'supplier_product_name': fields.char(
@@ -156,9 +159,9 @@ class product_integrated_trade_catalog(Model):
             'Supplier Partner Name', readonly=True),
         'hidden_product_tmpl_id': fields.many2one(
             'product.template', 'Product (Technical Field)', readonly=True),
-        'hidden_supplierinfo_id': fields.many2one(
-            'product.suppplierinfo', 'SupplierInfo (Technical Field)',
-            readonly=True),
+#        'hidden_supplierinfo_id': fields.many2one(
+#            'product.suppplierinfo', 'SupplierInfo (Technical Field)',
+#            readonly=True),
         'supplier_product_id': fields.many2one(
             'product.product', 'Supplier Product', readonly=True),
         'supplier_company_id': fields.many2one(
@@ -181,7 +184,7 @@ CREATE OR REPLACE VIEW %s AS (
             s_pp.id as supplier_product_id,
             s_pt.name as supplier_product_name,
             s_pp.default_code as supplier_product_default_code,
-            c_psi.id as hidden_supplierinfo_id,
+           --c_psi.id as hidden_supplierinfo_id,
             c_psi.product_id as hidden_product_tmpl_id,
             c_psi.integrated_price as customer_purchase_price,
             rit.supplier_company_id,
