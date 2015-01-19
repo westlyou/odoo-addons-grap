@@ -30,6 +30,4 @@
     name: Manager
     implied_ids:
         - pos_restaurant.res_group_restaurant_user
-    users:
-        - base.user_root
     comment: The user can see and manage Restaurant field. (Covers, Table, etc.)

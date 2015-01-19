@@ -45,6 +45,7 @@ Copyright, Author and Licence :
     * Licence : AGPL-3 (http://www.gnu.org/licenses/)
     """,
     'depends': [
+        'base',
         'point_of_sale',
         'pos_rewrite_create_aml',
     ],
@@ -52,5 +53,8 @@ Copyright, Author and Licence :
         'data/function.xml',
         'security/ir_model_access_data.yml',
         'view/view.xml'
+    ],
+    'demo': [
+        'demo/res_groups.yml',
     ],
 }
