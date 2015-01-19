@@ -24,6 +24,7 @@ from openerp.osv import fields
 from openerp.osv.orm import Model
 from openerp.addons import decimal_precision as dp
 
+
 class product_supplierinfo(Model):
     _inherit = 'product.supplierinfo'
 
@@ -37,19 +38,17 @@ class product_supplierinfo(Model):
                 res[psi.id] = 0
         return res
 
-
     _columns = {
         'integrated_price': fields.function(
             _get_integrated_price, string='Unit Price',
             digits_compute=dp.get_precision('Integrated Product Price'),
-                store={
-                'product.supplierinfo': (
-                    lambda self, cr, uid, ids, context=None: ids,
-                    [
-                        'supplier_product_id',
-                        'pricelist_ids',
-                    ], 10)}),
+            store={'product.supplierinfo': (
+                lambda self, cr, uid, ids, context=None: ids,
+                [
+                    'supplier_product_id',
+                    'pricelist_ids',
+                ], 10)}),
         'supplier_product_id': fields.many2one(
             'product.product',
             'Product in the Supplier Catalog', selected=True),
-        }
+    }

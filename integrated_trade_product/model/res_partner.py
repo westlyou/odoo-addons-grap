@@ -21,15 +21,15 @@
 ##############################################################################
 
 from openerp import SUPERUSER_ID
-from openerp.osv import fields
 from openerp.osv.orm import Model
+
 
 class res_partner(Model):
     _inherit = 'res.partner'
 
     # Public Function
     def update_all_products_as_customer(self, cr, uid, ids, context=None):
-        """ Update all product.pricelistinfo of products template that are 
+        """ Update all product.pricelistinfo of products template that are
         linked to external products for defined customers"""
         pitc_obj = self.pool['product.integrated.trade.catalog']
         pitc_ids = pitc_obj.search(cr, SUPERUSER_ID, [

@@ -33,8 +33,6 @@ class product_integrated_trade_catalog(Model):
     _auto = False
     _table = 'product_integrated_trade_catalog'
 
-
-
     # Overloadable Section
     def prepare_product_supplierinfo(
             self, cr, uid, supplier_partner_id, supplier_product_id,
@@ -74,9 +72,11 @@ class product_integrated_trade_catalog(Model):
         psi_obj = self.pool['product.supplierinfo']
         for pitc in self.browse(cr, uid, ids, context=context):
             if pitc.hidden_product_tmpl_id.id:
-                psi_ids = psi_obj.search(cr, uid, [
-                    ('supplier_product_id', '=', pitc.supplier_product_id),
-                ], context=context)
+                psi_ids = psi_obj.search(
+                    cr, uid, [
+                        ('supplier_product_id', '=', pitc.supplier_product_id),
+                    ], context=context)
+                psi_ids = psi_ids
 #                psi_obj.unlink(
 #                    cr, uid, [pitc.hidden_supplierinfo_id.id],
 #                    context=context)
@@ -98,8 +98,9 @@ class product_integrated_trade_catalog(Model):
     def _unlink_supplier_product(
             self, cr, uid, supplier_product_ids, context=None):
         psi_obj = self.pool['product.supplierinfo']
-        res = psi_obj.search(cr, uid, [
-            ('supplier_product_id', 'in', supplier_product_ids),
+        res = psi_obj.search(
+            cr, uid, [
+                ('supplier_product_id', 'in', supplier_product_ids),
             ], context=context)
         psi_lst = psi_obj.browse(cr, uid, res, context=context)
         product_tmpl_ids = [x.product_id.id for x in psi_lst]
@@ -159,9 +160,9 @@ class product_integrated_trade_catalog(Model):
             'Supplier Partner Name', readonly=True),
         'hidden_product_tmpl_id': fields.many2one(
             'product.template', 'Product (Technical Field)', readonly=True),
-#        'hidden_supplierinfo_id': fields.many2one(
-#            'product.suppplierinfo', 'SupplierInfo (Technical Field)',
-#            readonly=True),
+        #        'hidden_supplierinfo_id': fields.many2one(
+        #            'product.suppplierinfo', 'SupplierInfo (Technical Field)',
+        #            readonly=True),
         'supplier_product_id': fields.many2one(
             'product.product', 'Supplier Product', readonly=True),
         'supplier_company_id': fields.many2one(

@@ -20,8 +20,6 @@
 #
 ##############################################################################
 
-from openerp import SUPERUSER_ID
-from openerp.osv import fields
 from openerp.osv.orm import Model
 
 
@@ -30,8 +28,8 @@ class product_product(Model):
 
     _INTEGRATED_FIELDS = [
         'name', 'default_code', 'lst_price', 'price', 'price_extra',
-        'pricelist_id', # ?
-        'price_margin', # ?
+        #        'pricelist_id', # ?
+        #        'price_margin', # ?
         'taxes_id',
         'list_price',
     ]
@@ -42,8 +40,9 @@ class product_product(Model):
         # Update product in customer database if required
         if list(set(vals.keys()) & set(self._INTEGRATED_FIELDS)):
             pitc_obj = self.pool['product.integrated.trade.catalog']
-            pitc_ids = pitc_obj.search(cr, uid,
+            pitc_ids = pitc_obj.search(
+                cr, uid,
                 [('supplier_product_id', 'in', ids)], context=context)
-            
+
             pitc_obj.update_product(cr, uid, pitc_ids, context=context)
         return res
