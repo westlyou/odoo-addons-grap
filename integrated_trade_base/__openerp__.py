@@ -26,10 +26,17 @@
     'description': """
 Module for Integrated Trade for Base Module
 ===========================================
+
 Features :
 ----------
-    * Add a New Model Integrated Trade that define that two company can realize
-      purchases and sales between them;
+    * Add a New Model Integrated trade that define that two company can realize
+      purchases and sales between them with:
+        * a supplier company;
+        * a customer company;
+    * Add a new field 'integrated_trade' in 'res.partner' model;
+    * Add new groups to manage integrated trade;
+    * When we set a new integrated trade, OpenERP create a supplier in the
+      customer company and a customer in the supplier company;
 
 Demo Data:
 ----------

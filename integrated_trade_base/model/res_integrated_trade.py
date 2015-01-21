@@ -21,9 +21,9 @@
 ##############################################################################
 
 
-from openerp.osv import osv
 from openerp.osv import fields
 from openerp.osv.orm import Model
+from openerp.osv.osv import except_osv
 from openerp.tools.translate import _
 
 
@@ -144,9 +144,10 @@ class res_integrated_trade(Model):
                 vals.pop('customer_company_id')
                 vals.pop('supplier_company_id')
             else:
-                raise osv.except_osv(_("Error!"),
+                raise except_osv(
+                    _("Error!"),
                     _("""You can not change customer or supplier company."""
-                    """If you want to do so, please disable this integrated"""
-                    """ trade and create a new one."""))
+                        """If you want to do so, please disable this"""
+                        """ integrated trade and create a new one."""))
         return super(res_integrated_trade, self).write(
             cr, uid, ids, vals, context=context)
