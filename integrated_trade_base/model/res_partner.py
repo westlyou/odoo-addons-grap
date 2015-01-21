@@ -36,6 +36,8 @@ class res_partner(Model):
     }
 
     def _check_integrated_trade_access(self, cr, uid, ids, context=None):
+        """Restrict access of partner set as integrated_trade for only
+        'integrated_trade_manager' users."""
         ru_obj = self.pool['res.users']
         if not ru_obj.has_group(
                 cr, uid,

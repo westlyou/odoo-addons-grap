@@ -27,7 +27,10 @@ class res_company(Model):
     _inherit = 'res.company'
 
     def write(self, cr, uid, ids, vals, context=None):
-        super(res_company, self).write(cr, uid, ids, vals, context=context)
+        """update partners that are flagged as 'integrated_trade' and
+           are associated to the companies"""
+        res = super(res_company, self).write(
+            cr, uid, ids, vals, context=context)
         rit_obj = self.pool['res.integrated.trade']
         rp_obj = self.pool['res.partner']
         for rc in self.browse(cr, uid, ids, context=context):
@@ -50,3 +53,4 @@ class res_company(Model):
                 rit_obj._prepare_partner_from_company(
                     cr, uid, rc.id, context=context),
                 context=context)
+        return res

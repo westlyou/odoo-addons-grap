@@ -21,6 +21,7 @@
 ##############################################################################
 
 
+from openerp.osv import osv
 from openerp.osv import fields
 from openerp.osv.orm import Model
 from openerp.tools.translate import _
@@ -83,10 +84,12 @@ class res_integrated_trade(Model):
             'email': rc.email,
             'vat': rc.vat,
             'is_company': True,
+            'image': rc.logo,
         }
 
     # Overload Section
     def create(self, cr, uid, vals, context=None):
+        """Create or update associated partner in each company"""
         rp_obj = self.pool['res.partner']
         res = super(res_integrated_trade, self).create(
             cr, uid, vals, context=context)
@@ -134,11 +137,16 @@ class res_integrated_trade(Model):
         return res
 
     def write(self, cr, uid, ids, vals, context=None):
-        # Block possibility to change customer or supplier company
-        # on Update
-        if 'customer_company_id' in vals.keys():
-            vals.pop('customer_company_id')
-        if 'supplier_company_id' in vals.keys():
-            vals.pop('supplier_company_id')
+        """ Block possibility to change customer or supplier company"""
+        if 'customer_company_id' in vals.keys()\
+                or 'supplier_company_id' in vals.keys():
+            if context.get('install_mode', False):
+                vals.pop('customer_company_id')
+                vals.pop('supplier_company_id')
+            else:
+                raise osv.except_osv(_("Error!"),
+                    _("""You can not change customer or supplier company."""
+                    """If you want to do so, please disable this integrated"""
+                    """ trade and create a new one."""))
         return super(res_integrated_trade, self).write(
             cr, uid, ids, vals, context=context)

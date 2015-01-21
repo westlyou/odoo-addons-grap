@@ -54,9 +54,8 @@
             <field name="model">res.partner</field>
             <field name="inherit_id" ref="base.view_partner_form"/>
             <field name="arch" type="xml">
-                <field name="is_company" position="before">
-                    <field name="integrated_trade" class="oe_inline"/>
-                    <label for="integrated_trade" string="Integrated Trade?"/>
+                <field name="customer" position="before">
+                    <field name="integrated_trade"/>
                 </field>
             </field>
         </record>
