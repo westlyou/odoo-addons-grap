@@ -21,7 +21,7 @@
 ##############################################################################
 
 - !record {model: res.company, id: customer_company}:
-    name: French Ministry of Economy
+    name: French Ministry of Economy CUSTOMER
     street: 139, rue de Bercy
     street2: Télédoc 136 Cedex 12
     zip: 75572
@@ -29,7 +29,7 @@
     country_id: base.fr
 
 - !record {model: res.company, id: supplier_company}:
-    name: French Ministry of Agriculture
+    name: French Ministry of Agriculture SUPPLIER
     street: 78, rue de Varenne
     street2: SP 07
     zip: 75349

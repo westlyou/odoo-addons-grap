@@ -67,26 +67,23 @@ class product_integrated_trade_catalog(Model):
     # Public Function
     def update_product(
             self, cr, uid, ids, context=None):
-        """Call this function to force to update product supplierinfo
+        """Call this function to force to update customer product supplierinfo
         if it is necessary"""
-        psi_obj = self.pool['product.supplierinfo']
+        print "pitc::update_product"
         for pitc in self.browse(cr, uid, ids, context=context):
-            if pitc.hidden_product_tmpl_id.id:
-                psi_ids = psi_obj.search(
-                    cr, uid, [
-                        ('supplier_product_id', '=', pitc.supplier_product_id),
-                    ], context=context)
-                psi_ids = psi_ids
-#                psi_obj.unlink(
-#                    cr, uid, [pitc.hidden_supplierinfo_id.id],
-#                    context=context)
-#                pitc._link_product(
-#                    cr, uid, pitc, pitc.customer_product_tmpl_id.id,
-#                    context=context)
+            product_tmpl_id = pitc.product_tmpl_id.id
+#            import pdb; pdb.set_trace()
+#            self._unlink_customer_product_tmpl(
+#                cr, uid, [pitc.product_tmpl_id.id], context=context)
+#            self._link_product(
+#                cr, uid, pitc, product_tmpl_id,
+#                context=context)
 
     # Private Section
     def _link_product(
             self, cr, uid, pitc, new_product_tmpl_id, context=None):
+        """Link an existing customer template id to a supplier product id"""
+        print "pitc::_link_product"
         psi_obj = self.pool['product.supplierinfo']
         vals = self.prepare_product_supplierinfo(
             cr, uid, pitc.supplier_partner_id.id, pitc.supplier_product_id.id,
@@ -108,18 +105,16 @@ class product_integrated_trade_catalog(Model):
             cr, uid, product_tmpl_ids, context=context)
 
     def _unlink_customer_product_tmpl(
-            self, cr, uid, customer_product_ids, context=None):
-        """ FIXME: Maybe better to say to overload
-        product_supplierinfo.unlink()
-        Function to unlink a product associated to an supplier Product.
+            self, cr, uid, customer_product_tmpl_ids, context=None):
+        """Unlink a product associated to an supplier Product.
         Please Overload this function to add extra constraints, for
         exemple, disable the possibility to unlink a product if there
         is pending sale / purchase of that product."""
+        print "pitc::_unlink_customer_product_tmpl"
         psi_obj = self.pool['product.supplierinfo']
         res = psi_obj.search(cr, uid, [
-            ('product_id', 'in', customer_product_ids)], context=context)
-        psi_obj.unlink(cr, uid, res, context=context)
-        return len(res)
+            ('product_id', 'in', customer_product_tmpl_ids)], context=context)
+        return psi_obj.unlink(cr, uid, res, context=context)
 
     # Fields Function Section
     def _get_product_tmpl_id(self, cr, uid, ids, name, arg, context=None):
@@ -149,7 +144,7 @@ class product_integrated_trade_catalog(Model):
         'product_tmpl_id': fields.function(
             _get_product_tmpl_id, fnct_inv=_set_product_tmpl_id,
             string='Product', type='many2one',
-            relation='product.template', required=True),
+            relation='product.template'),
         'customer_purchase_price': fields.float(
             'Customer Purchase Price', readonly=True),
         'supplier_product_name': fields.char(

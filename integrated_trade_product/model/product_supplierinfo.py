@@ -49,6 +49,6 @@ class product_supplierinfo(Model):
                     'pricelist_ids',
                 ], 10)}),
         'supplier_product_id': fields.many2one(
-            'product.product',
-            'Product in the Supplier Catalog', selected=True),
+            'product.product', 'Product in the Supplier Catalog',
+            readonly=True, selected=True),
     }
