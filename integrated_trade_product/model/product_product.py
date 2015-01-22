@@ -34,15 +34,15 @@ class product_product(Model):
         'list_price',
     ]
 
-    def write(self, cr, uid, ids, vals, context=None):
-        res = super(product_product, self).write(
-            cr, uid, ids, vals, context=context)
-        # Update product in customer database if required
-        if list(set(vals.keys()) & set(self._INTEGRATED_FIELDS)):
-            pitc_obj = self.pool['product.integrated.trade.catalog']
-            pitc_ids = pitc_obj.search(
-                cr, uid,
-                [('supplier_product_id', 'in', ids)], context=context)
+#    def write(self, cr, uid, ids, vals, context=None):
+#        res = super(product_product, self).write(
+#            cr, uid, ids, vals, context=context)
+#        # Update product in customer database if required
+#        if list(set(vals.keys()) & set(self._INTEGRATED_FIELDS)):
+#            pitc_obj = self.pool['product.integrated.trade.catalog']
+#            pitc_ids = pitc_obj.search(
+#                cr, uid,
+#                [('supplier_product_id', 'in', ids)], context=context)
 
-            pitc_obj.update_product(cr, uid, pitc_ids, context=context)
-        return res
+#            pitc_obj.update_product(cr, uid, pitc_ids, context=context)
+#        return res

@@ -1,7 +1,7 @@
 # -*- encoding: utf-8 -*-
 ##############################################################################
 #
-#    Integrated Trade - Stock module for OpenERP
+#    Integrated Trade - Stock module for Odoo
 #    Copyright (C) 2014-Today GRAP (http://www.grap.coop)
 #    @author Sylvain LE GAL (https://twitter.com/legalsylvain)
 #
@@ -19,37 +19,17 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-{
-    'name': 'Integrated Trade - Stock',
-    'version': '0.1',
-    'category': 'Purchase',
-    'description': """
-Module for Integrated Trade for Stock Module
-==============================================
 
-Features:
----------
-    *
+- !record {model: stock.location, id: supplier_stock_location_stock}:
+    name: Integrated Trade - Supplier Location Stock
+    usage: internal
+    chained_location_type: none
+    chained_auto_packing: manual
+    company_id: integrated_trade_base.supplier_company
 
-Copyright, Authors and Licence:
--------------------------------
-    * Copyright: 2014, GRAP: Groupement Régional Alimentaire de Proximité;
-    * Author:
-        * Sylvain LE GAL (https://twitter.com/legalsylvain);
-    * Licence: AGPL-3 (http://www.gnu.org/licenses/);""",
-    'author': 'GRAP',
-    'website': 'http://www.grap.coop',
-    'license': 'AGPL-3',
-    'depends': [
-        'integrated_trade_base',
-        'stock',
-    ],
-    'demo': [
-        'demo/res_groups.yml',
-        'demo/stock_location.yml',
-        'demo/stock_warehouse.yml',
-    ],
-    'data': [
-    ],
-    'auto_install': True,
-}
+- !record {model: stock.location, id: supplier_stock_location_output}:
+    name: Integrated Trade - Supplier Location Customer
+    usage: internal
+    chained_location_type: customer
+    chained_auto_packing: transparent
+    company_id: integrated_trade_base.supplier_company

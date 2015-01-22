@@ -1,7 +1,7 @@
 # -*- encoding: utf-8 -*-
 ##############################################################################
 #
-#    Integrated Trade - Stock module for OpenERP
+#    Integrated Trade - Stock module for Odoo
 #    Copyright (C) 2014-Today GRAP (http://www.grap.coop)
 #    @author Sylvain LE GAL (https://twitter.com/legalsylvain)
 #
@@ -19,37 +19,10 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-{
-    'name': 'Integrated Trade - Stock',
-    'version': '0.1',
-    'category': 'Purchase',
-    'description': """
-Module for Integrated Trade for Stock Module
-==============================================
 
-Features:
----------
-    *
-
-Copyright, Authors and Licence:
--------------------------------
-    * Copyright: 2014, GRAP: Groupement Régional Alimentaire de Proximité;
-    * Author:
-        * Sylvain LE GAL (https://twitter.com/legalsylvain);
-    * Licence: AGPL-3 (http://www.gnu.org/licenses/);""",
-    'author': 'GRAP',
-    'website': 'http://www.grap.coop',
-    'license': 'AGPL-3',
-    'depends': [
-        'integrated_trade_base',
-        'stock',
-    ],
-    'demo': [
-        'demo/res_groups.yml',
-        'demo/stock_location.yml',
-        'demo/stock_warehouse.yml',
-    ],
-    'data': [
-    ],
-    'auto_install': True,
-}
+- !record {model: stock.warehouse, id: supplier_stock_warehouse}:
+    name: Integrated Trade - Supplier Warehouse
+    lot_input_id: supplier_stock_location_stock
+    lot_stock_id: supplier_stock_location_stock
+    lot_output_id: supplier_stock_location_output
+    company_id: integrated_trade_base.supplier_company

@@ -24,3 +24,5 @@ from . import res_partner
 from . import product_product
 from . import product_supplierinfo
 from . import product_integrated_trade_catalog
+from . import res_integrated_trade
+from . import integrated_trade_wizard_link_product

@@ -30,10 +30,10 @@
 
 - !record {model: res.groups, id: integrated_trade_user}:
     users:
-        - integrated_customer_user
-        - integrated_supplier_user
+        - customer_user
+        - supplier_user
 
 - !record {model: res.groups, id: base.group_sale_manager}:
     users:
         - base.user_root
-        - integrated_customer_user
+        - supplier_user

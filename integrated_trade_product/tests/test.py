@@ -62,46 +62,47 @@ class Test(TransactionCase):
             len(pp_c_apple.seller_ids), 1,
             """Associate a Customer Product to a Supplier Product must"""
             """ create a Product Supplierinfo.""")
-        # Reassociate with correct product (customer apple - supplier apple)
-        pitc_id = self.pitc_obj.search(cr, uid, [
-            ('supplier_product_id', '=', self.supplier_apple_id),
-        ])
-        self.pitc_obj.write(cr, uid, pitc_id, {
-            'product_tmpl_id': self.customer_apple_id})
-        pp_c_apple = self.pp_obj.browse(
-            cr, uid, self.customer_apple_id)
-        self.assertEqual(
-            len(pp_c_apple.seller_ids), 1,
-            """Associate a still associated Customer Product to a Supplier"""
-            """ Product must delete the previous association.""")
-        self.assertEqual(
-            pp_c_apple.seller_ids[0].supplier_product_id.id,
-            self.supplier_apple_id,
-            """Associate a still associated Customer Product to a new"""
-            """ Supplier Product must create a new association.""")
 
-    def test_02_product_update(self):
-        """[Functional Test] Check if change a supplier product update the
-        product supplierinfo in the customer database"""
-        cr, uid = self.cr, self.uid
-        pitc_id = self.pitc_obj.search(cr, uid, [
-            ('supplier_product_id', '=', self.supplier_apple_id),
-        ])
-        self.pitc_obj.write(cr, uid, pitc_id, {
-            'product_tmpl_id': self.customer_apple_id})
+#        # Reassociate with correct product (customer apple - supplier apple)
+#        pitc_id = self.pitc_obj.search(cr, uid, [
+#            ('supplier_product_id', '=', self.supplier_apple_id),
+#        ])
+#        self.pitc_obj.write(cr, uid, pitc_id, {
+#            'product_tmpl_id': self.customer_apple_id})
+#        pp_c_apple = self.pp_obj.browse(
+#            cr, uid, self.customer_apple_id)
+#        self.assertEqual(
+#            len(pp_c_apple.seller_ids), 1,
+#            """Associate a still associated Customer Product to a Supplier"""
+#            """ Product must delete the previous association.""")
+#        self.assertEqual(
+#            pp_c_apple.seller_ids[0].supplier_product_id.id,
+#            self.supplier_apple_id,
+#            """Associate a still associated Customer Product to a new"""
+#            """ Supplier Product must create a new association.""")
 
-        # Change name in the supplier product
-        new_name = 'Supplier New Name'
-        self.pp_obj.write(cr, uid, [self.supplier_apple_id], {
-            'name': new_name})
+#    def test_02_product_update(self):
+#        """[Functional Test] Check if change a supplier product update the
+#        product supplierinfo in the customer database"""
+#        cr, uid = self.cr, self.uid
+#        pitc_id = self.pitc_obj.search(cr, uid, [
+#            ('supplier_product_id', '=', self.supplier_apple_id),
+#        ])
+#        self.pitc_obj.write(cr, uid, pitc_id, {
+#            'product_tmpl_id': self.customer_apple_id})
 
-        pp_c_apple = self.pp_obj.browse(cr, uid, self.customer_apple_id)
-        self.assertEqual(
-            pp_c_apple.seller_ids[0].product_name,
-            new_name,
-            """Update the name of the supplier product must update the"""
-            """ Supplier Info of the customer Product.""")
+#        # Change name in the supplier product
+#        new_name = 'Supplier New Name'
+#        self.pp_obj.write(cr, uid, [self.supplier_apple_id], {
+#            'name': new_name})
 
+#        pp_c_apple = self.pp_obj.browse(cr, uid, self.customer_apple_id)
+#        self.assertEqual(
+#            pp_c_apple.seller_ids[0].product_name,
+#            new_name,
+#            """Update the name of the supplier product must update the"""
+#            """ Supplier Info of the customer Product.""")
+# ##############################
 #        # Change code in the supplier product
 #        new_code = '[SUPPLIER-NEW-CODE]'
 #        self.pp_obj.write(cr, uid, [self.supplier_apple_id], {

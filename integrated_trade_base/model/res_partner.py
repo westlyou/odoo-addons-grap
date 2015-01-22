@@ -35,6 +35,10 @@ class res_partner(Model):
             help="Indicate that this partner is a company in Odoo."),
     }
 
+    # TODO
+    # Ref, check on write / create / delete / to have the possibility to
+    # allow user to change pricelist;
+    # if pricelist_changed, --> update the product;
     def _check_integrated_trade_access(self, cr, uid, ids, context=None):
         """Restrict access of partner set as integrated_trade for only
         'integrated_trade_manager' users."""

@@ -1,8 +1,8 @@
 # -*- encoding: utf-8 -*-
 ##############################################################################
 #
-#    Integrated Trade - Stock module for OpenERP
-#    Copyright (C) 2014-Today GRAP (http://www.grap.coop)
+#    Integrated Trade - Account module for OpenERP
+#    Copyright (C) 2015-Today GRAP (http://www.grap.coop)
 #    @author Sylvain LE GAL (https://twitter.com/legalsylvain)
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -20,20 +20,20 @@
 #
 ##############################################################################
 {
-    'name': 'Integrated Trade - Stock',
+    'name': 'Integrated Trade - Account',
     'version': '0.1',
-    'category': 'Purchase',
+    'category': 'Base',
     'description': """
-Module for Integrated Trade for Stock Module
+Module for Integrated Trade for Account Module
 ==============================================
 
-Features:
----------
-    *
+Features :
+----------
+    * Add Demo Data;
 
 Copyright, Authors and Licence:
 -------------------------------
-    * Copyright: 2014, GRAP: Groupement Régional Alimentaire de Proximité;
+    * Copyright: 2015, GRAP: Groupement Régional Alimentaire de Proximité;
     * Author:
         * Sylvain LE GAL (https://twitter.com/legalsylvain);
     * Licence: AGPL-3 (http://www.gnu.org/licenses/);""",
@@ -41,13 +41,12 @@ Copyright, Authors and Licence:
     'website': 'http://www.grap.coop',
     'license': 'AGPL-3',
     'depends': [
-        'integrated_trade_base',
-        'stock',
+        'base',
     ],
     'demo': [
         'demo/res_groups.yml',
-        'demo/stock_location.yml',
-        'demo/stock_warehouse.yml',
+        'demo/account_account.yml',
+        'demo/ir_property.xml',
     ],
     'data': [
     ],

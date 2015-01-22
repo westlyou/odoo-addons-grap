@@ -1,8 +1,8 @@
 # -*- encoding: utf-8 -*-
 ##############################################################################
 #
-#    Integrated Trade - Base module for OpenERP
-#    Copyright (C) 2014-Today GRAP (http://www.grap.coop)
+#    Integrated Trade - Purchase - Sale module for Odoo
+#    Copyright (C) 2015-Today GRAP (http://www.grap.coop)
 #    @author Sylvain LE GAL (https://twitter.com/legalsylvain)
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -20,25 +20,9 @@
 #
 ##############################################################################
 
-- !record {model: res.users, id: base.user_root}:
-    company_id: base.main_company
-    company_ids:
-        - customer_company
-        - supplier_company
-        - base.main_company
-
-- !record {model: res.users, id: customer_user}:
-    name: Integrated Customer User
-    login: integrated_customer
-    password: demo
-    company_id: customer_company
-    company_ids:
-        - customer_company
-
-- !record {model: res.users, id: supplier_user}:
-    name: Integrated Supplier User
-    login: integrated_supplier
-    password: demo
-    company_id: supplier_company
-    company_ids:
-        - supplier_company
+- !record {model: sale.shop, id: supplier_sale_shop}:
+    name: Integrated Trade - Supplier shop
+    warehouse_id: integrated_trade_stock.supplier_stock_warehouse
+    payment_default_id: account.account_payment_term_immediate
+    company_id: integrated_trade_base.supplier_company
+    pricelist_id: product.list0

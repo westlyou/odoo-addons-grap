@@ -30,6 +30,8 @@ Module for Integrated Trade for Product Module
 Features:
 ---------
     * Give the possibility to customer to link a product to a supplier product;
+    * Change the pricelist on customer change the pricelist on
+      res.integrated.trade object;
 
 TODO:
 -----
@@ -37,6 +39,7 @@ TODO:
     * Change product information must change supplierinfo;
     * Change price information must change supplierinfo;
     * Change pricelist information must change supplierinfo;
+    * Supplierinfo is readonly in integrated trade;
 
 Copyright, Authors and Licence:
 -------------------------------
@@ -53,6 +56,8 @@ Copyright, Authors and Licence:
     ],
     'demo': [
         'demo/product_product.yml',
+        'demo/res_groups.yml',
+        'demo/product_pricelist.yml',
     ],
     'data': [
         'security/ir_model_access.yml',

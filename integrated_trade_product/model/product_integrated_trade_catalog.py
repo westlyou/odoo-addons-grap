@@ -26,6 +26,7 @@ from openerp import SUPERUSER_ID
 from openerp import tools
 from openerp.osv import fields
 from openerp.osv.orm import Model
+from openerp.addons import decimal_precision as dp
 
 
 class product_integrated_trade_catalog(Model):
@@ -33,141 +34,79 @@ class product_integrated_trade_catalog(Model):
     _auto = False
     _table = 'product_integrated_trade_catalog'
 
-    # Overloadable Section
-    def prepare_product_supplierinfo(
-            self, cr, uid, supplier_partner_id, supplier_product_id,
-            customer_company_id, customer_partner_id, context=None):
-        """Overload this function to change the datas of the supplierinfo
-        create when a link between a two products is done."""
-        pp_obj = self.pool['product.product']
-        rp_obj = self.pool['res.partner']
-        ppl_obj = self.pool['product.pricelist']
-        pp = pp_obj.browse(
-            cr, SUPERUSER_ID, supplier_product_id, context=context)
-        rp = rp_obj.browse(
-            cr, SUPERUSER_ID, supplier_partner_id, context=context)
-        price = ppl_obj.price_get(
-            cr, uid, [rp.property_product_pricelist.id], pp.id,
-            1.0, rp.id, {
-                'uom': pp.uos_id.id,
-                'date': date.today().strftime('%Y-%m-%d'),
-            })[rp.property_product_pricelist.id]
+    # Custom Section
+    def _get_supplier_product_id_from_id(self, str_id):
+        return int(str_id[:-4])
+
+    def _get_integrated_trade_id_from_id(self, str_id):
+        return int(str_id[-4:])
+
+    # Button Section
+    def link_product_wizard(self, cr, uid, ids, context=None):
         return {
-            'min_qty': 0.0,
-            'name': rp.id,
-            'product_name': pp.name,
-            'product_code': pp.default_code,
-            'company_id': customer_company_id,
-            'supplier_product_id': pp.id,
-            'pricelist_ids': [[0, False, {
-                'min_quantity': 0.0,
-                'price': price}]],
+            'view_type': 'form',
+            'view_mode': 'form',
+            'res_model': 'integrated.trade.wizard.link.product',
+            'type': 'ir.actions.act_window',
+            'target': 'new',
+            'context': context,
         }
 
-    # Public Function
-    def update_product(
-            self, cr, uid, ids, context=None):
-        """Call this function to force to update customer product supplierinfo
-        if it is necessary"""
-        print "pitc::update_product"
-        for pitc in self.browse(cr, uid, ids, context=context):
-            product_tmpl_id = pitc.product_tmpl_id.id
-#            import pdb; pdb.set_trace()
-#            self._unlink_customer_product_tmpl(
-#                cr, uid, [pitc.product_tmpl_id.id], context=context)
-#            self._link_product(
-#                cr, uid, pitc, product_tmpl_id,
-#                context=context)
-
-    # Private Section
-    def _link_product(
-            self, cr, uid, pitc, new_product_tmpl_id, context=None):
-        """Link an existing customer template id to a supplier product id"""
-        print "pitc::_link_product"
+    def unlink_product(self, cr, uid, ids, context=None):
         psi_obj = self.pool['product.supplierinfo']
-        vals = self.prepare_product_supplierinfo(
-            cr, uid, pitc.supplier_partner_id.id, pitc.supplier_product_id.id,
-            pitc.customer_company_id.id, pitc.customer_partner_id.id,
-            context=context)
-        vals['product_id'] = new_product_tmpl_id
-        psi_obj.create(cr, uid, vals, context=context)
-
-    def _unlink_supplier_product(
-            self, cr, uid, supplier_product_ids, context=None):
-        psi_obj = self.pool['product.supplierinfo']
-        res = psi_obj.search(
-            cr, uid, [
-                ('supplier_product_id', 'in', supplier_product_ids),
-            ], context=context)
-        psi_lst = psi_obj.browse(cr, uid, res, context=context)
-        product_tmpl_ids = [x.product_id.id for x in psi_lst]
-        self._unlink_customer_product_tmpl(
-            cr, uid, product_tmpl_ids, context=context)
-
-    def _unlink_customer_product_tmpl(
-            self, cr, uid, customer_product_tmpl_ids, context=None):
-        """Unlink a product associated to an supplier Product.
-        Please Overload this function to add extra constraints, for
-        exemple, disable the possibility to unlink a product if there
-        is pending sale / purchase of that product."""
-        print "pitc::_unlink_customer_product_tmpl"
-        psi_obj = self.pool['product.supplierinfo']
-        res = psi_obj.search(cr, uid, [
-            ('product_id', 'in', customer_product_tmpl_ids)], context=context)
-        return psi_obj.unlink(cr, uid, res, context=context)
+        for id in ids:
+            supplier_product_id = self._get_supplier_product_id_from_id(id)
+            psi_ids = psi_obj.search(cr, uid, [
+                ('supplier_product_id', '=', supplier_product_id)],
+                context=context)
+            psi_obj.unlink(cr, uid, psi_ids, context=context)
+        return True
 
     # Fields Function Section
-    def _get_product_tmpl_id(self, cr, uid, ids, name, arg, context=None):
+    def _get_supplier_sale_price(self, cr, uid, ids, name, arg, context=None):
         res = {}
+        ppl_obj = self.pool['product.pricelist']
         for pitc in self.browse(cr, uid, ids, context=context):
-            res[pitc.id] = pitc.hidden_product_tmpl_id.id
+            if pitc.customer_purchase_price != 0:
+                res[pitc.id] = pitc.customer_purchase_price
+            else:
+                res[pitc.id] = ppl_obj.price_get(
+                    cr, SUPERUSER_ID, [pitc.pricelist_id.id],
+                    pitc.supplier_product_id.id,
+                    1.0, pitc.supplier_partner_id.id, {
+                        'uom': pitc.supplier_product_uos.id,
+                        'date': date.today().strftime('%Y-%m-%d'),
+                    })[pitc.pricelist_id.id]
         return res
-
-    def _set_product_tmpl_id(
-            self, cr, uid, ids, field_name, field_value, arg, context=None):
-        if not type(ids) is list:
-            ids = [ids]
-        for pitc in self.browse(cr, uid, ids, context=context):
-            if field_value:
-                self._unlink_customer_product_tmpl(
-                    cr, uid, [field_value], context=context)
-            self._unlink_supplier_product(
-                cr, uid, [pitc.supplier_product_id.id], context=context)
-            if field_value:
-                self._link_product(
-                    cr, uid, pitc, field_value,
-                    context=context)
-        return True
 
     # Column Section
     _columns = {
-        'product_tmpl_id': fields.function(
-            _get_product_tmpl_id, fnct_inv=_set_product_tmpl_id,
-            string='Product', type='many2one',
-            relation='product.template'),
+        'integrated_trade_id': fields.many2one(
+            'res.integrated.trade', 'Integrated Trade', readonly=True),
+        'customer_product_tmpl_id': fields.many2one(
+            'product.template', 'Customer Product', readonly=True),
+        'supplier_sale_price': fields.function(
+            _get_supplier_sale_price, 'Supplier Sale Price', type='float',
+            digits_compute=dp.get_precision('Integrated Product Price')),
         'customer_purchase_price': fields.float(
             'Customer Purchase Price', readonly=True),
-        'supplier_product_name': fields.char(
-            'Supplier Product Name', readonly=True),
-        'supplier_product_default_code': fields.char(
-            'Supplier Product Code', readonly=True),
-        'supplier_partner_name': fields.char(
-            'Supplier Partner Name', readonly=True),
-        'hidden_product_tmpl_id': fields.many2one(
-            'product.template', 'Product (Technical Field)', readonly=True),
-        #        'hidden_supplierinfo_id': fields.many2one(
-        #            'product.suppplierinfo', 'SupplierInfo (Technical Field)',
-        #            readonly=True),
-        'supplier_product_id': fields.many2one(
-            'product.product', 'Supplier Product', readonly=True),
-        'supplier_company_id': fields.many2one(
-            'res.company', 'Supplier Company', readonly=True),
-        'supplier_partner_id': fields.many2one(
-            'res.partner', 'Supplier Partner', readonly=True),
+        'pricelist_id': fields.many2one(
+            'product.pricelist', 'Price List', readonly=True),
         'customer_company_id': fields.many2one(
             'res.company', 'Customer Company', readonly=True),
-        'customer_partner_id': fields.many2one(
-            'res.partner', 'Customer Partner', readonly=True),
+        'supplier_product_name': fields.char(
+            'Supplier Product Name', readonly=True),
+        'supplier_product_uos': fields.many2one(
+            'product.uom', 'Supplier Product UoS', readonly=True),
+        'supplier_product_default_code': fields.char(
+            'Supplier Product Code', readonly=True),
+        'supplier_partner_id': fields.many2one(
+            'res.partner', 'Supplier Partner', readonly=True),
+        'supplier_partner_name': fields.char(
+            'Supplier Partner Name', readonly=True),
+        'supplier_product_id': fields.many2one(
+            'product.product', 'Supplier Product', readonly=True),
+
     }
 
     # View Section
@@ -176,17 +115,19 @@ class product_integrated_trade_catalog(Model):
         cr.execute("""
 CREATE OR REPLACE VIEW %s AS (
         SELECT
-            s_pp.id as id,
+            to_char(s_pp.id, 'FM099999') || to_char(rit.id, 'FM0000') as id,
+            rit.id as integrated_trade_id,
+            c_psi.product_id as customer_product_tmpl_id,
+            rit.customer_company_id,
+            rit.pricelist_id as pricelist_id,
+            rit.customer_partner_id,
             s_pp.id as supplier_product_id,
+            s_pt.uos_id as supplier_product_uos,
             s_pt.name as supplier_product_name,
             s_pp.default_code as supplier_product_default_code,
-           --c_psi.id as hidden_supplierinfo_id,
-            c_psi.product_id as hidden_product_tmpl_id,
             c_psi.integrated_price as customer_purchase_price,
             rit.supplier_company_id,
             rit.supplier_partner_id,
-            rit.customer_company_id,
-            rit.customer_partner_id,
             c_rp.name as supplier_partner_name
         FROM product_product s_pp
         INNER JOIN product_template s_pt

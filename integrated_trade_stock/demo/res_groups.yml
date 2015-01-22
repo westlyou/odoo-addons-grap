@@ -22,4 +22,9 @@
 
 - !record {model: res.groups, id: stock.group_stock_user}:
     users:
-        - integrated_trade_base.integrated_customer_user
+        - integrated_trade_base.customer_user
+
+- !record {model: res.groups, id: stock.group_locations}:
+    users:
+        - base.user_root
+        - integrated_trade_base.supplier_user

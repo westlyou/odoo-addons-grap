@@ -47,10 +47,10 @@ class res_integrated_trade(Model):
             'res.company', 'Supplier Company', required=True,
             help="""Select the company that could sale to the other."""),
         'customer_partner_id': fields.many2one(
-            'res.partner', 'Customer Partner in Supplier Company',
+            'res.partner', 'Customer Partner in the Supplier Company',
             readonly=True),
         'supplier_partner_id': fields.many2one(
-            'res.partner', 'Customer Partner in Supplier Company',
+            'res.partner', 'Supplier Partner in the Customer Company',
             readonly=True),
     }
 

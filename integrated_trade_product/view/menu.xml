@@ -20,15 +20,13 @@
 <openerp>
     <data>
 
-        <menuitem id="menu_integrated_trade_root"
-            name="Integrated Trade"
-            sequence="21"/>
-
+<!-- Integrated Trade: SubMenu Catalog -->
         <menuitem id="menu_integrated_trade_catalog"
-            parent="menu_integrated_trade_root"
+            parent="integrated_trade_base.menu_integrated_trade_root"
             name="Catalogs"
-            sequence="1"/>
+            sequence="2"/>
 
+<!-- Model: product.integrated.trade.catalog -->
         <menuitem id="menu_integrated_trade_product_catalog"
             parent="menu_integrated_trade_catalog"
             name="Products"

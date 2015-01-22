@@ -46,6 +46,8 @@ Copyright, Authors and Licence:
         'sale',
     ],
     'demo': [
+        'demo/res_groups.yml',
+        'demo/sale_shop.yml',
     ],
     'data': [
     ],
