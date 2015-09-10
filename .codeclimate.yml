@@ -1,0 +1,3 @@
+exclude_paths:
+- __unported__/**/*
+- __wont_port__/**/*
