@@ -20,27 +20,24 @@
 #
 ##############################################################################
 
-from openerp.osv import fields
-from openerp.osv.orm import Model
+from openerp import models, fields, api
 
 
-class grap_category(Model):
-    _description = 'Category of activities'
+class GrapCategory(models.Model):
     _name = 'grap.category'
 
-    # Field Function section
-    def _get_activity_count(self, cr, uid, ids, field_name, arg, context=None):
-        res = {}
-        for category in self.browse(cr, uid, ids, context):
-            res[category.id] = len(category.activity_ids)
-        return res
-
     # Columns section
-    _columns = {
-        'name': fields.char('Name', size=128, required=True),
-        'activity_ids': fields.many2many(
-            'grap.activity', 'grap_activity_category_rel',
-            'category_id', 'activity_id', 'Activities'),
-        'activity_count': fields.function(
-            _get_activity_count, type='integer', string='Activities count'),
-    }
+    name = fields.Char(string='Name', required=True)
+
+    activity_ids = fields.Many2many(
+        comodel_name='grap.activity', relation='grap_activity_category_rel',
+        column1='category_id', column2='activity_id', string='Activities')
+
+    activity_count = fields.Integer(
+        compute='_compute_activity_count', string='Activities count')
+
+    # Compute section
+    @api.one
+    @api.depends('activity_ids')
+    def _compute_activity_count(self):
+        self.activity_count = len(self.activity_ids)

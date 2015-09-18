@@ -2,7 +2,7 @@
 ##############################################################################
 #
 #    GRAP - Cooperative module for Odoo
-#    Copyright (C) 2014 GRAP (http://www.grap.coop)
+#    Copyright (C) 2014-Today GRAP (http://www.grap.coop)
 #    @author Sylvain LE GAL (https://twitter.com/legalsylvain)
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -20,26 +20,26 @@
 #
 ##############################################################################
 
-from openerp.osv import fields
-from openerp.osv.orm import Model
+from openerp import models, fields, api
 
 
-class grap_college(Model):
-    _description = 'Colleges'
+class GrapCollege(models.Model):
     _name = 'grap.college'
 
-    # Field Function section
-    def _get_member_count(self, cr, uid, ids, field_name, arg, context=None):
-        res = {}
-        for college in self.browse(cr, uid, ids, context):
-            res[college.id] = len(college.member_ids)
-        return res
-
     # Columns section
-    _columns = {
-        'name': fields.char('Name', size=128, required=True),
-        'percentage': fields.integer('Percentage', required=True),
-        'member_ids': fields.one2many('grap.member', 'college_id', 'Members'),
-        'member_count': fields.function(
-            _get_member_count, type='integer', string='Members count'),
-    }
+    name = fields.Char(string='Name', required=True)
+
+    percentage = fields.Integer(string='Percentage', required=True)
+
+    member_ids = fields.One2many(
+        comodel_name='grap.member', inverse_name='college_id',
+        string='Members')
+
+    member_count = fields.Integer(
+        compute='_compute_member_count', string='Members count')
+
+    # Field Function section
+    @api.one
+    @api.depends('member_ids')
+    def _compute_member_count(self):
+        self.member_count = len(self.member_ids)

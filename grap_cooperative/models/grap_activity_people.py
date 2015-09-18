@@ -20,57 +20,42 @@
 #
 ##############################################################################
 
-from openerp.osv import fields
-from openerp.osv.orm import Model
+from openerp import fields, models, api
 from openerp.tools.translate import _
 
 
-class grap_activity_people(Model):
-    _description = 'Relation between activities and people'
+class GrapActivityPeople(models.Model):
     _name = 'grap.activity.people'
     _order = 'people_id'
-    _rec_name = 'complete_name'
-
-    def _get_complete_name(self, cr, uid, ids, fields, args, context=None):
-        res = []
-        for gap in self.browse(cr, uid, ids, context=context):
-            res.append((
-                gap.id,
-                _('%s (%s FTE)') % (gap.activity_id.name, gap.fte)))
-        return dict(res)
-
-    def name_get(self, cr, uid, ids, context=None):
-        res = []
-        for pc in self.browse(cr, uid, ids):
-            res.append((pc.id, pc.complete_name))
-        return res
 
     # Columns section
-    _columns = {
-        'activity_id': fields.many2one(
-            'grap.activity', 'Activity',
-            required=True, ondelete='cascade', readonly=True),
-        'people_id': fields.many2one('grap.people', 'People'),
-        'fte': fields.float(
-            'FTE', required=True, digits=(9, 1),
-            help="Full Time Equilalent"),
-        'working_email': fields.related(
-            'people_id', 'working_email',
-            type='char', string='Contact EMail', readonly=True),
-        'private_phone': fields.related(
-            'people_id', 'private_phone',
-            type='char', string='Private Phone', readonly=True),
-        'working_phone': fields.related(
-            'people_id', 'grap_member_id', 'working_phone',
-            type='char', string='Working Phone', readonly=True),
-        'complete_name': fields.function(
-            _get_complete_name, type='char', string='Name', store=True),
-    }
+    name = fields.Char(
+        compute='_compute_name', string='Name', store=True)
 
-    # Default section
-    _defaults = {
-        'fte': 1,
-    }
+    activity_id = fields.Many2one(
+        comodel_name='grap.activity', string='Activity', required=True,
+        ondelete='cascade', readonly=True)
+
+    people_id = fields.Many2one(comodel_name='grap.people', string='People')
+
+    fte = fields.Float(string='Full Time Equilalent', required=True, default=1)
+
+    working_email = fields.Char(
+        related='people_id.working_email', string='Contact EMail')
+
+    private_phone = fields.Char(
+        related='people_id.private_phone', string='Private Phone')
+
+    working_phone = fields.Char(
+        related='people_id.grap_member_id.working_phone',
+        string='Working Phone')
+
+    # Compute Section
+    @api.one
+    @api.depends('activity_id', 'activity_id.name', 'fte')
+    def _compute_name(self):
+        self.name = _(
+            '%s (%d FTE)') % (self.activity_id.name, self.fte)
 
     # Constraints section
     _sql_constraints = [

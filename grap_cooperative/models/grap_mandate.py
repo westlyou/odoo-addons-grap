@@ -2,7 +2,7 @@
 ##############################################################################
 #
 #    GRAP - Cooperative module for Odoo
-#    Copyright (C) 2014 GRAP (http://www.grap.coop)
+#    Copyright (C) 2014-Today GRAP (http://www.grap.coop)
 #    @author Sylvain LE GAL (https://twitter.com/legalsylvain)
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -20,26 +20,24 @@
 #
 ##############################################################################
 
-from openerp.osv import fields
-from openerp.osv.orm import Model
+from openerp import models, fields, api
 
 
-class grap_mandate(Model):
-    _description = 'Mandate'
+class GrapMandate(models.Model):
     _name = 'grap.mandate'
 
-    # Columns section
-    def _get_people_count(self, cr, uid, ids, field_name, arg, context=None):
-        res = {}
-        for mandate in self.browse(cr, uid, ids, context):
-            res[mandate.id] = len(mandate.people_ids)
-        return res
+    # Column Section
+    name = fields.Char(required=True, string='Name')
 
-    _columns = {
-        'name': fields.char('Name', size=128, required=True),
-        'people_ids': fields.many2many(
-            'grap.people', 'grap_people_mandate_rel',
-            'mandate_id', 'people_id', 'Members'),
-        'people_count': fields.function(
-            _get_people_count, type='integer', string='People count')
-    }
+    people_ids = fields.Many2many(
+        comodel_name='grap.people', relation='grap_people_mandate_rel',
+        column1='mandate_id', column2='people_id', string='Members')
+
+    people_count = fields.Integer(
+        compute='_compute_people_count', string='People count')
+
+    # Compute Section
+    @api.one
+    @api.depends('people_ids')
+    def _compute_people_count(self):
+        self.people_count = len(self.people_ids)

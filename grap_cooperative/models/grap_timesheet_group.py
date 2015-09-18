@@ -2,7 +2,7 @@
 ##############################################################################
 #
 #    GRAP - Cooperative module for Odoo
-#    Copyright (C) 2014 GRAP (http://www.grap.coop)
+#    Copyright (C) 2014-Today GRAP (http://www.grap.coop)
 #    @author Sylvain LE GAL (https://twitter.com/legalsylvain)
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -20,18 +20,17 @@
 #
 ##############################################################################
 
-from openerp.osv import fields
-from openerp.osv.orm import Model
+from openerp import models, fields
 
 
-class grap_timesheet_type(Model):
-    _description = 'Time Sheet Group'
+class GrapTimesheetGroup(models.Model):
     _name = 'grap.timesheet.group'
 
     # Columns section
-    _columns = {
-        'name': fields.char('Name', size=256, required=True),
-        'activity_ids': fields.many2many(
-            'grap.activity', 'grap_activity_timesheet_group_rel',
-            'activity_id', 'grap_timesheet_group_id', 'Activities'),
-    }
+    name = fields.Char(
+        required=True, string='Name')
+
+    activity_ids = fields.Many2many(
+        comodel_name='grap.activity',
+        relation='grap_activity_timesheet_group_rel', column1='activity_id',
+        column2='grap_timesheet_group_id', string='Activities')

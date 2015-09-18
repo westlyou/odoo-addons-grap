@@ -20,84 +20,82 @@
 #
 ##############################################################################
 
-from openerp.osv import fields
-from openerp.osv.orm import Model
-import time
-
-_GRAP_TODO_TASK_STATE = [
-    ('1_draft', 'Draft'),
-    ('2_qualified', 'Qualified'),
-    ('3_in_progress', 'In Progress'),
-    ('4_waiting_migration', 'Waiting Migration'),
-    ('5_done', 'In Production'),
-    ('6_canceled', 'Canceled'),
-]
-
-_GRAP_TODO_TASK_IMPORTANCE = [
-    ('undefined', 'Undefined'),
-    ('low', 'Low'),
-    ('average', 'Average'),
-    ('high', 'High'),
-]
+from openerp import models, fields, api
 
 
-class grap_todo_task(Model):
-    _description = 'Todo Task'
+class GrapTodoTask(models.Model):
     _name = 'grap.todo.task'
     _order = 'state desc, name'
 
+    # Constant Section
+    _GRAP_TODO_TASK_STATE = [
+        ('1_draft', 'Draft'),
+        ('2_qualified', 'Qualified'),
+        ('3_in_progress', 'In Progress'),
+        ('4_waiting_migration', 'Waiting Migration'),
+        ('5_done', 'In Production'),
+        ('6_canceled', 'Canceled'),
+    ]
+
+    _GRAP_TODO_TASK_IMPORTANCE = [
+        ('undefined', 'Undefined'),
+        ('low', 'Low'),
+        ('average', 'Average'),
+        ('high', 'High'),
+    ]
+
     # Field Function Section
-    def _get_left_days(self, cr, uid, ids, name, arg, context=None):
-        res = {}
-        for gtt in self.browse(cr, uid, ids, context=context):
-            res[gtt.id] = gtt.total_days - gtt.made_days
-        return res
+    @api.one
+    @api.depends('total_days', 'made_days')
+    def _compute_left_days(self):
+        self.left_days = self.total_days - self.made_days
 
     # Columns section
-    _columns = {
-        'name': fields.char('Name', size=128, required=True),
-        'total_days': fields.float('Total Days', digits=(9, 1), required=True),
-        'made_days': fields.float('Made Days', digits=(9, 1), required=True),
-        'left_days': fields.function(
-            _get_left_days, type='float', string='Left Days', store=True),
-        'start_date': fields.date('Start Date', required=True),
-        'stop_date': fields.date('Stop date'),
-        'note': fields.text('Description'),
-        'internal_note': fields.text('Internal Note'),
-        'state': fields.selection(
-            _GRAP_TODO_TASK_STATE, 'State', required=True),
-        'importance': fields.selection(
-            _GRAP_TODO_TASK_IMPORTANCE, 'Importance', required=True),
-        'applicant_ids': fields.many2many(
-            'grap.member', 'grap_todo_task_member_rel',
-            'todo_task_id', 'member_id', 'Applicants'),
-        'worker_ids': fields.many2many(
-            'grap.people', 'grap_todo_task_people_rel',
-            'todo_task_id', 'people_id', 'Workers'),
-    }
+    name = fields.Char(string='Name', required=True)
 
-    # Default section
-    _defaults = {
-        'state': '1_draft',
-        'importance': 'undefined',
-        'total_days': 0,
-        'made_days': 0,
-        'start_date': lambda *a: time.strftime('%Y-%m-%d'),
-    }
+    total_days = fields.Float(
+        string='Total Days', digits=(9, 1), required=True, default=0)
+
+    made_days = fields.Float(
+        string='Made Days', digits=(9, 1), required=True, default=0)
+
+    left_days = fields.Float(
+        compute='_compute_left_days', string='Left Days', store=True)
+
+    start_date = fields.Date(
+        string='Start Date', required=True, default=fields.Date.context_today)
+
+    stop_date = fields.Date(string='Stop date')
+
+    note = fields.Text(string='Description')
+
+    internal_note = fields.Text(string='Internal Note')
+
+    state = fields.Selection(
+        selection=_GRAP_TODO_TASK_STATE, string='State', required=True,
+        default='1_draft')
+
+    importance = fields.Selection(
+        selection=_GRAP_TODO_TASK_IMPORTANCE, string='Importance',
+        required=True, default='undefined')
+
+    applicant_ids = fields.Many2many(
+        comodel_name='grap.member', relation='grap_todo_task_member_rel',
+        column1='todo_task_id', column2='member_id', string='Applicants')
+
+    worker_ids = fields.Many2many(
+        comodel_name='grap.people', relation='grap_todo_task_people_rel',
+        column1='todo_task_id', column2='people_id', string='Workers')
 
     # State section
-    def state_previous(self, cr, uid, ids, context=None):
-        for activity in self.browse(cr, uid, ids, context=context):
-            for index in range(len(_GRAP_TODO_TASK_STATE) - 1):
-                if activity.state == _GRAP_TODO_TASK_STATE[index + 1][0]:
-                    self.write(cr, uid, activity.id, {
-                        'state': _GRAP_TODO_TASK_STATE[index][0]})
-            return False
+    @api.one
+    def state_previous(self):
+        for index in range(len(self._GRAP_TODO_TASK_STATE) - 1):
+            if self.state == self._GRAP_TODO_TASK_STATE[index + 1][0]:
+                self.state = self._GRAP_TODO_TASK_STATE[index][0]
 
-    def state_next(self, cr, uid, ids, context=None):
-        for activity in self.browse(cr, uid, ids, context=context):
-            for index in range(len(_GRAP_TODO_TASK_STATE) - 1):
-                if activity.state == _GRAP_TODO_TASK_STATE[index][0]:
-                    self.write(cr, uid, activity.id, {
-                        'state': _GRAP_TODO_TASK_STATE[index + 1][0]})
-            return False
+    @api.one
+    def state_next(self):
+        for index in range(len(self._GRAP_TODO_TASK_STATE) - 1):
+            if self.state == self._GRAP_TODO_TASK_STATE[index][0]:
+                self.state = self._GRAP_TODO_TASK_STATE[index + 1][0]

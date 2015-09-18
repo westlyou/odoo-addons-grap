@@ -20,36 +20,30 @@
 #
 ##############################################################################
 
-from openerp.osv import fields
-from openerp.osv.orm import Model
+from openerp import models, fields
 
 
-class grap_member(Model):
-    _description = 'Members'
+class GrapMember(models.Model):
     _name = 'grap.member'
-    _order = "name"
+    _order = 'name'
 
     # Columns section
-    _columns = {
-        'name': fields.char('Name', size=128, readonly=True),
-        'image': fields.binary('Image', help='Limited to 512x512px.'),
-        'street': fields.char('Street', size=128),
-        'zip': fields.char('Zip', size=24),
-        'city': fields.char('City', size=128),
-        'working_email': fields.char('Contact EMail', size=240),
-        'working_phone': fields.char('Working Phone', size=64),
-        'college_id': fields.many2one('grap.college', 'College'),
-        'date_capital_entry': fields.date('Entry date In Capital'),
-        'share_number': fields.integer('Number of Share in Capital'),
-    }
+    name = fields.Char(string='Name', required=True, readonly=True)
 
-    # Overload section
-    def name_get(self, cr, uid, ids, context=None):
-        return super(grap_member, self).name_get(cr, uid, ids, context=context)
+    image = fields.Binary(string='Image', help='Limited to 512x512px.')
 
-    def name_search(
-            self, cr, uid, name='', args=None, operator='ilike',
-            context=None, limit=100):
-        return super(grap_member, self).name_search(
-            cr, uid, name=name, args=args, operator=operator,
-            context=context, limit=limit)
+    street = fields.Char(string='Street')
+
+    zip = fields.Char(string='Zip')
+
+    city = fields.Char(string='City')
+
+    working_email = fields.Char(string='Contact EMail')
+
+    working_phone = fields.Char(string='Working Phone')
+
+    college_id = fields.Many2one(comodel_name='grap.college', string='College')
+
+    date_capital_entry = fields.Date(string='Entry date In Capital')
+
+    share_number = fields.Integer(string='Number of Share in Capital')

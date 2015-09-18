@@ -2,7 +2,7 @@
 ##############################################################################
 #
 #    GRAP - Cooperative module for Odoo
-#    Copyright (C) 2014 GRAP (http://www.grap.coop)
+#    Copyright (C) 2014-Today GRAP (http://www.grap.coop)
 #    @author Sylvain LE GAL (https://twitter.com/legalsylvain)
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -20,75 +20,68 @@
 #
 ##############################################################################
 
-from openerp.osv import fields
-from openerp.osv.orm import Model
+from openerp import models, fields, api
 
 
-class grap_people(Model):
-    _description = 'People'
+class GrapPeople(models.Model):
     _name = 'grap.people'
     _inherits = {'grap.member': 'grap_member_id'}
-    _order = 'last_name,first_name'
-
-    # Fields Function section
-    def _get_name(self, firstName, lastName):
-        return lastName + ' ' + firstName
+    _order = 'last_name, first_name'
 
     # Column section
-    _columns = {
-        'grap_member_id': fields.many2one(
-            'grap.member', 'Member', required=True, ondelete="cascade"),
-        'first_name': fields.char(
-            'First name', size=128, required=True),
-        'last_name': fields.char(
-            'Last name', size=128, required=True),
-        'private_phone': fields.char(
-            'Private Phone', size=64),
-        'activity_ids': fields.one2many(
-            'grap.activity.people', 'people_id', 'Activities'),
-        'accountant_activity_ids': fields.one2many(
-            'grap.activity', 'accountant_interlocutor_id',
-            'Accounting Performed for Activities'),
-        'hr_activity_ids': fields.one2many(
-            'grap.activity', 'hr_interlocutor_id',
-            'Human Ressources Performed for Activities'),
-        'attendant_activity_ids': fields.one2many(
-            'grap.activity', 'attendant_interlocutor_id',
-            'Attending Performed for Activities'),
-        'mandate_ids': fields.many2many(
-            'grap.mandate', 'grap_people_mandate_rel',
-            'people_id', 'mandate_id', 'Mandates',),
-        'description': fields.text('Self Description'),
-        'skills': fields.text('Skills'),
-        'catchword': fields.char('Catchword'),
+    grap_member_id = fields.Many2one(
+        comodel_name='grap.member', string='Member', required=True,
+        ondelete='cascade')
 
-    }
+    first_name = fields.Char(string='First name', required=True)
 
-    # Overloads section
-    def create(self, cr, uid, data, context=None):
-        data['name'] = self._get_name(data['first_name'], data['last_name'])
-        return super(grap_people, self).create(cr, uid, data, context=context)
+    last_name = fields.Char(string='Last name', required=True)
 
-    def write(self, cr, uid, ids, data, context=None):
-        if not hasattr(ids, '__iter__'):
-            ids = [ids]
-        if 'last_name' in data.keys() and 'first_name' in data.keys():
-            # global change
-            data['name'] = self._get_name(
-                data['first_name'], data['last_name'])
-        elif 'last_name' in data.keys():
-            # specific change for each people
-            for people in self.browse(cr, uid, ids, context=context):
-                spec_data = {'name': self._get_name(
-                    people.first_name, data['last_name'])}
-                super(grap_people, self).write(
-                    cr, uid, people.id, spec_data, context=context)
-        elif 'first_name' in data.keys():
-            # specific change for each people
-            for people in self.browse(cr, uid, ids, context=context):
-                spec_data = {'name': self._get_name(
-                    data['first_name'], people.last_name)}
-                super(grap_people, self).write(
-                    cr, uid, people.id, spec_data, context=context)
-        return super(grap_people, self).write(
-            cr, uid, ids, data, context=context)
+    private_phone = fields.Char(string='Private Phone')
+
+    activity_ids = fields.One2many(
+        comodel_name='grap.activity.people', inverse_name='people_id',
+        string='Activities', readonly=True)
+
+    accountant_activity_ids = fields.One2many(
+        comodel_name='grap.activity',
+        inverse_name='accountant_interlocutor_id',
+        string='Accounting Performed for Activities')
+
+    hr_activity_ids = fields.One2many(
+        comodel_name='grap.activity', inverse_name='hr_interlocutor_id',
+        string='Human Ressources Performed for Activities')
+
+    attendant_activity_ids = fields.One2many(
+        comodel_name='grap.activity', inverse_name='attendant_interlocutor_id',
+        string='Attending Performed for Activities')
+
+    mandate_ids = fields.Many2many(
+        comodel_name='grap.mandate', relation='grap_people_mandate_rel',
+        column1='people_id', column2='mandate_id', string='Mandates')
+
+    description = fields.Text(string='Self Description')
+
+    skills = fields.Text(string='Skills')
+
+    catchword = fields.Char(string='Catchword')
+
+    # Overload Section
+    @api.model
+    def create(self, vals):
+        vals['name'] =\
+            vals.get('last_name', '') + ' ' + vals.get('first_name', '')
+        return super(GrapPeople, self).create(vals)
+
+    @api.one
+    def write(self, vals):
+        if vals.get('first_name', False) and vals.get('last_name', False):
+            vals['name'] =\
+                vals.get('last_name', '') + ' ' + vals.get('first_name', '')
+        elif vals.get('last_name', False):
+            vals['name'] = \
+                vals.get('last_name', '') + ' ' + self.first_name
+        elif vals.get('first_name', False):
+            vals['name'] = \
+                self.last_name + ' ' + vals.get('first_name', '')
+        return super(GrapPeople, self).write(vals)

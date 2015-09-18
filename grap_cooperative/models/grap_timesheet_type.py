@@ -20,61 +20,30 @@
 #
 ##############################################################################
 
-from openerp.osv import fields
-from openerp.osv.orm import Model
+from openerp import models, fields, api
 
 
-class grap_timesheet_type(Model):
-    _description = 'Time Sheet type'
+class GrapTimesheetType(models.Model):
     _name = 'grap.timesheet.type'
-    _order = 'complete_name'
-
-    # Custom Section
-    def _compute_complete_name(self, cr, uid, pId, context=None):
-        gtt = self.browse(cr, uid, pId, context=context)
-        if gtt.parent_id:
-            res = self._compute_complete_name(
-                cr, uid, gtt.parent_id.id, context=context) + ' / ' + gtt.name
-        else:
-            res = gtt.name
-        return res
-
-    # Search Section
-    def name_search(
-            self, cr, uid, name='', args=None, operator='ilike', context=None,
-            limit=80):
-        ids = []
-        ids = self.search(
-            cr, uid, [
-                ('complete_name', operator, name)] + args,
-            limit=limit, context=context)
-        return self.name_get(cr, uid, ids)
-
-    # Getter Section
-    def _get_complete_name(self, cr, uid, ids, pFields, args, context=None):
-        res = []
-        for gtt in self.browse(cr, uid, ids, context=context):
-            res.append((gtt.id, self._compute_complete_name(
-                cr, uid, gtt.id, context=context)))
-        return dict(res)
-
-    def name_get(self, cr, uid, ids, context=None):
-        res = []
-        for gtt in self.browse(cr, uid, ids):
-            res.append((gtt.id, gtt.complete_name))
-        return res
+#    _order = 'complete_name'
 
     # Columns section
-    _columns = {
-        'name': fields.char('Name', size=256, required=True),
-        'active': fields.boolean('Active'),
-        'parent_id': fields.many2one(
-            'grap.timesheet.type', 'Parent'),
-        'complete_name': fields.function(
-            _get_complete_name, type='char', string='Complete Name',
-            store=True),
-    }
+    name = fields.Char(string='Name', required=True)
 
-    _defaults = {
-        'active': True,
-    }
+    active = fields.Boolean(string='Active', default=True)
+
+    parent_id = fields.Many2one(
+        comodel_name='grap.timesheet.type', string='Parent')
+
+    display_name = fields.Char(
+        compute='_compute_display_name', string='Complete Name', store=True)
+
+    # Compute Section
+    @api.one
+    @api.depends('parent_id', 'name')
+    def _compute_display_name(self):
+        if self.parent_id:
+            self.display_name =\
+                self.parent_id.display_name + ' / ' + self.name
+        else:
+            self.display_name = self.name

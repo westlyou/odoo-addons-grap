@@ -20,107 +20,106 @@
 #
 ##############################################################################
 
-from openerp.osv import fields
-from openerp.osv.orm import Model
-
-_GRAP_ACTIVITY_STATE = [
-    ('draft', 'No linked'),
-    ('progress', 'project in progress'),
-    ('validated', 'Validated'),
-    ('working', 'Working'),
-    ('obsolete', 'project exited'),
-]
+from openerp import models, fields, api
 
 
-class grap_activity(Model):
-    _description = 'Activities'
+class GrapActivity(models.Model):
     _name = 'grap.activity'
     _inherits = {'grap.member': 'grap_member_id'}
     _order = 'activity_name'
 
-    # fields function section
-    def _get_fte(self, cr, uid, ids, name, arg, context=None):
-        res = {}
-        for ga in self.browse(cr, uid, ids, context=context):
-            res[ga.id] = 0
-            for gap in ga.people_ids:
-                res[ga.id] += gap.fte
-        return res
+    # Constant Section
+    _GRAP_ACTIVITY_STATE = [
+        ('draft', 'No linked'),
+        ('progress', 'project in progress'),
+        ('validated', 'Validated'),
+        ('working', 'Working'),
+        ('obsolete', 'project exited'),
+    ]
+
+#    name = fields.Char(compute='_compute_name_2', store=True)
 
     # Columns section
-    _columns = {
-        'grap_member_id': fields.many2one(
-            'grap.member', 'Member', required=True, ondelete="cascade"),
-        'activity_name': fields.char(
-            'Name', size=128, required=True),
-        'code': fields.char(
-            'code', size=3),
-        'siret': fields.char(
-            'SIRET', size=64),
-        'vat': fields.char(
-            'Taxe ID', size=32),
-        'web_site': fields.char(
-            'Web Site', size=128),
-        'state': fields.selection(
-            _GRAP_ACTIVITY_STATE, 'State', required=True),
-        'date_validated': fields.date(
-            'Validation date by cooperative'),
-        'date_in': fields.date(
-            'Date of activity begins to work'),
-        'date_out': fields.date(
-            'Date of activity ends to work'),
-        'type_id': fields.many2one('grap.type', 'Type'),
-        'accountant_interlocutor_id': fields.many2one(
-            'grap.people', 'Accoutant Interlocutor'),
-        'hr_interlocutor_id': fields.many2one(
-            'grap.people', 'Human Ressources Interlocutor'),
-        'attendant_interlocutor_id': fields.many2one(
-            'grap.people', 'Attendant Interlocutor'),
-        'category_ids': fields.many2many(
-            'grap.category', 'grap_activity_category_rel', 'activity_id',
-            'category_id', 'Categories'),
-        'people_ids': fields.one2many(
-            'grap.activity.people', 'activity_id', 'Workers',),
-        'fte': fields.function(
-            _get_fte, digits=(16, 1), string='FTE',
-            help="Full Time Equivalent.", store={
-                'grap.activity': (
-                    lambda self, cr, uid, ids, c={}: ids,
-                    ['people_ids'], 10)}),
-    }
+    grap_member_id = fields.Many2one(
+        comodel_name='grap.member', string='Member', required=True,
+        ondelete='cascade')
 
-    # Default section
-    _defaults = {
-        'state': 'draft',
-    }
+    activity_name = fields.Char('Activity Name', required=True)
 
-    # Overloads section
-    def create(self, cr, uid, data, context=None):
-        data['name'] = data['activity_name']
-        return super(grap_activity, self).create(
-            cr, uid, data, context=context)
+    state = fields.Selection(
+        selection=_GRAP_ACTIVITY_STATE, string='State', required=True,
+        default='draft')
 
-    def write(self, cr, uid, ids, data, context=None):
-        if not hasattr(ids, '__iter__'):
-            ids = [ids]
-        if 'activity_name' in data.keys():
-            data['name'] = data['activity_name']
-        return super(grap_activity, self).write(
-            cr, uid, ids, data, context=context)
+    code = fields.Char(string='code')
 
-    # State section
-    def state_previous(self, cr, uid, ids, context=None):
-        for activity in self.browse(cr, uid, ids, context=context):
-            for index in range(len(_GRAP_ACTIVITY_STATE) - 1):
-                if activity.state == _GRAP_ACTIVITY_STATE[index + 1][0]:
-                    self.write(cr, uid, activity.id, {
-                        'state': _GRAP_ACTIVITY_STATE[index][0]})
-            return False
+    siret = fields.Char('SIRET')
 
-    def state_next(self, cr, uid, ids, context=None):
-        for activity in self.browse(cr, uid, ids, context=context):
-            for index in range(len(_GRAP_ACTIVITY_STATE) - 1):
-                if activity.state == _GRAP_ACTIVITY_STATE[index][0]:
-                    self.write(cr, uid, activity.id, {
-                        'state': _GRAP_ACTIVITY_STATE[index + 1][0]})
-            return False
+    vat = fields.Char('Taxe ID')
+
+    web_site = fields.Char(string='Web Site')
+
+    date_validated = fields.Date(string='Validation date by cooperative')
+
+    date_in = fields.Date(
+        string='Business In Date', help='Date of activity begins to work')
+
+    date_out = fields.Date(
+        string='Business Out Date', help='Date of activity ends to work')
+
+    type_id = fields.Many2one(
+        comodel_name='grap.type', string='Type')
+
+    accountant_interlocutor_id = fields.Many2one(
+        comodel_name='grap.people', string='Accoutant Interlocutor')
+
+    hr_interlocutor_id = fields.Many2one(
+        comodel_name='grap.people', string='Human Ressources Interlocutor')
+
+    attendant_interlocutor_id = fields.Many2one(
+        comodel_name='grap.people', string='Attendant Interlocutor')
+
+    category_ids = fields.Many2many(
+        comodel_name='grap.category', relation='grap_activity_category_rel',
+        column1='activity_id', column2='category_id', string='Categories')
+
+    people_ids = fields.One2many(
+        comodel_name='grap.activity.people', inverse_name='activity_id',
+        string='Workers')
+
+    fte = fields.Float(
+        compute='_compute_fte', string='Full Time Equivalent')
+
+    # Compute Section
+    @api.one
+    @api.depends('people_ids', 'people_ids.fte')
+    def _compute_fte(self):
+        self.fte = 0
+        for people in self.people_ids:
+            self.fte += people.fte
+
+    # Overload Section
+    @api.model
+    def create(self, vals):
+        vals['name'] = vals.get('activity_name', False)
+        return super(GrapActivity, self).create(vals)
+
+    @api.one
+    def write(self, vals):
+        if vals.get('activity_name', False):
+            vals['name'] = vals.get('activity_name')
+        return super(GrapActivity, self).write(vals)
+
+    # View section
+    @api.one
+    def button_state_previous(self):
+        for index in range(len(self._GRAP_ACTIVITY_STATE) - 1):
+            if self.state == self._GRAP_ACTIVITY_STATE[index + 1][0]:
+                self.state = self._GRAP_ACTIVITY_STATE[index][0]
+                break
+
+    @api.one
+    def button_state_next(self):
+        for index in range(len(self._GRAP_ACTIVITY_STATE) - 1):
+            if self.state == self._GRAP_ACTIVITY_STATE[index][0]:
+                self.state = self._GRAP_ACTIVITY_STATE[index + 1][0]
+                break

@@ -2,7 +2,7 @@
 ##############################################################################
 #
 #    GRAP - Cooperative module for Odoo
-#    Copyright (C) 2014 GRAP (http://www.grap.coop)
+#    Copyright (C) 2014-Today GRAP (http://www.grap.coop)
 #    @author Sylvain LE GAL (https://twitter.com/legalsylvain)
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -20,85 +20,63 @@
 #
 ##############################################################################
 
-from openerp.osv import fields
-from openerp.osv.orm import Model
+from openerp import models, fields, api
 
 
-class grap_timesheet(Model):
-    _description = 'Time Sheet'
+class GrapTimesheet(models.Model):
     _name = 'grap.timesheet'
     _order = 'date desc, id desc'
 
-    # Fields Function Section
-    def _get_activity(
-            self, cr, uid, ids, pFields, args, context=None):
-        res = {}
-        for gt in self.browse(cr, uid, ids, context=context):
-            res[gt.id] = {
-                'activity_qty': len(gt.activity_ids),
-                'amount_per_activity': gt.amount / len(gt.activity_ids),
-            }
-        return res
+    # Columns section
+    name = fields.Char(string='Name', required=True, default='/')
 
-    def _get_timesheet_group_id(
-            self, cr, uid, ids, pFields, args, context=None):
-        return dict([(x, False) for x in ids])
+    date = fields.Date(
+        string='Date', required=True, default=fields.Date.context_today)
 
-    def _set_timesheet_group_id(
-            self, cr, uid, pId, field_name, field_value, args, context=None):
+    amount = fields.Float(string='Worked Hours', required=True, default=0.0)
+
+    worker_id = fields.Many2one(
+        comodel_name='grap.people', string='Worker', required=True)
+
+    activity_ids = fields.Many2many(
+        comodel_name='grap.activity', relation='grap_timesheet_activity_rel',
+        column1='timesheet_id', column2='activity_id', string='Activities',
+        required=True)
+
+    type_id = fields.Many2one(
+        comodel_name='grap.timesheet.type', string='Work Type', required=True)
+
+    timesheet_group_id = fields.Many2one(
+        comodel_name='grap.timesheet.group', string='Group',
+        compute='_compute_timesheet_group_id',
+        inverse='_set_timesheet_group_id')
+
+    activity_qty = fields.Integer(
+        compute='_compute_activity_info', string='Activities Quantity',
+        multi='activity')
+
+    amount_per_activity = fields.Float(
+        compute='_compute_activity_info', string='Amount Per Activity',
+        multi='activity', store=True)
+
+    # Compute Section
+    def _compute_timesheet_group_id(self):
         pass
 
-    # Columns section
-    _columns = {
-        'name': fields.char('Name', size=256, required=True),
-        'worker_id': fields.many2one('grap.people', 'Worker', required=True),
-        'date': fields.date('Date', required=True),
-        'amount': fields.float(
-            'Hours', help='Specifies the amount of worked hours.',
-            required=True),
-        'activity_ids': fields.many2many(
-            'grap.activity',
-            'grap_timesheet_activity_rel', 'timesheet_id', 'activity_id',
-            'Activities'),
-        'type_id': fields.many2one(
-            'grap.timesheet.type', 'Work Type', required=True),
-        'timesheet_group_id': fields.function(
-            _get_timesheet_group_id, type='many2one',
-            fnct_inv=_set_timesheet_group_id,
-            relation='grap.timesheet.group', string='Group'),
-        'activity_qty': fields.function(
-            _get_activity, type='integer', string='Activities Quantity',
-            multi='activity', store={
-                'grap.timesheet': (
-                    lambda self, cr, uid, ids, context=None: ids, [
-                        'activity_ids',
-                    ], 10)}),
-        'amount_per_activity': fields.function(
-            _get_activity, type='float', string='Amount Per Activity',
-            multi='activity', store={
-                'grap.timesheet': (
-                    lambda self, cr, uid, ids, context=None: ids, [
-                        'activity_ids',
-                    ], 10)}),
-    }
+    def _set_timesheet_group_id(self):
+        pass
 
-    # Default Section
-    def _get_default_date(self, cr, uid, context=None):
-        return fields.date.context_today(self, cr, uid, context=context)
-
-    _defaults = {
-        'name': '/',
-        'date': _get_default_date,
-        'amount': 0.00,
-    }
+    @api.one
+    @api.depends('activity_ids')
+    def _compute_activity_info(self):
+        self.activity_qty = len(self.activity_ids)
+        self.amount_per_activity = self.amount / len(self.activity_ids)
 
     # Views section
-    def on_change_timesheet_group_id(
-            self, cr, uid, ids, timesheet_group_id, context=None):
-        if not timesheet_group_id:
-            values = {}
+    @api.one
+    @api.onchange('timesheet_group_id')
+    def on_change_timesheet_group_id(self):
+        if self.timesheet_group_id:
+            self.activity_ids = self.timesheet_group_id.activity_ids.ids
         else:
-            gtg_obj = self.pool['grap.timesheet.group']
-            gtg = gtg_obj.browse(cr, uid, timesheet_group_id, context=context)
-            values = {'activity_ids': [x.id for x in gtg.activity_ids]}
-        return {'value': values}
+            self.activity_ids = False

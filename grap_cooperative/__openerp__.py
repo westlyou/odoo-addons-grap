@@ -2,7 +2,7 @@
 ##############################################################################
 #
 #    GRAP - Cooperative module for Odoo
-#    Copyright (C) 2014 GRAP (http://www.grap.coop)
+#    Copyright (C) 2014-Today GRAP (http://www.grap.coop)
 #    @author Sylvain LE GAL (https://twitter.com/legalsylvain)
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -22,32 +22,17 @@
 
 {
     'name': 'GRAP - Cooperative',
-    'version': '0.1',
+    'version': '8.0.2.0.0.',
     'category': 'GRAP - Custom',
-    'description': """
-Manage people and enterprise linked to GRAP
-===========================================
-Features :
-----------
-    * manage people, companies, members of the cooperative;
-    * provides a light tools to manage informatic tasks;
-    * provides a light tools to manage work time with an analytic depending"""
-    """ of the companies;
-
-Copyright, Authors and Licence:
--------------------------------
-    * Copyright: 2014, GRAP: Groupement Régional Alimentaire de Proximité;
-    * Author: Sylvain LE GAL (https://twitter.com/legalsylvain);
-    * Licence: AGPL-3 (http://www.gnu.org/licenses/);""",
     'author': 'GRAP',
     'website': 'http://www.grap.coop',
     'license': 'AGPL-3',
     'depends': ['base'],
     'data': [
-        'security/res_groups_data.yml',
-        'security/ir_model_access_data.yml',
-        'view/view.xml',
-        'view/action.xml',
-        'view/menu.xml',
+        'security/res_groups.yml',
+        'security/ir_model_access.yml',
+        'views/view.xml',
+        'views/action.xml',
+        'views/menu.xml',
     ],
 }

@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- ********************************************************************** -->
 <!--    GRAP - Cooperative module for Odoo                                  -->
-<!--    Copyright (C) 2014 GRAP (http://www.grap.coop)                      -->
+<!--    Copyright (C) 2014-Today GRAP (http://www.grap.coop)                -->
 <!--    @author Sylvain LE GAL (https://twitter.com/legalsylvain)           -->
-
+<!--                                                                        -->
 <!--This program is free software: you can redistribute it and/or modify    -->
 <!--it under the terms of the GNU Affero General Public License as          -->
 <!--published by the Free Software Foundation, either version 3 of the      -->
 <!--License, or (at your option) any later version.                         -->
-
+<!--                                                                        -->
 <!--This program is distributed in the hope that it will be useful,         -->
 <!--but WITHOUT ANY WARRANTY; without even the implied warranty of          -->
 <!--MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the           -->
 <!--GNU Affero General Public License for more details.                     -->
-
+<!--                                                                        -->
 <!--You should have received a copy of the GNU Affero General Public License-->
 <!--along with this program.  If not, see <http://www.gnu.org/licenses/>.   -->
 <!-- ********************************************************************** -->
@@ -89,37 +89,34 @@
         </record>
 
         <record id="action_grap_timesheet" model="ir.actions.act_window">
-            <field name="name">time Sheets</field>
+            <field name="name">Time Sheets</field>
             <field name="res_model">grap.timesheet</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
             <field name="context">{"search_default_filter_today":1}</field>
-            <field name="help">Display and manage time Sheets.</field>
+            <field name="help">Display and manage Time Sheets.</field>
         </record>
 
         <record id="action_grap_timesheet_type" model="ir.actions.act_window">
-            <field name="name">time Sheet Types</field>
+            <field name="name">Time Sheet Types</field>
             <field name="res_model">grap.timesheet.type</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
-            <field name="help">Display and manage timesheet Types.</field>
+            <field name="help">Display and manage Timesheet Types.</field>
         </record>
 
         <record id="action_grap_timesheet_group" model="ir.actions.act_window">
-            <field name="name">time Sheet Groups</field>
+            <field name="name">Time Sheet Groups</field>
             <field name="res_model">grap.timesheet.group</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
-            <field name="help">Display and manage timesheet Groups.</field>
         </record>
 
         <record id="action_grap_timesheet_report" model="ir.actions.act_window">
-            <field name="name">time Sheet Report</field>
+            <field name="name">Time Sheet Report</field>
             <field name="res_model">grap.timesheet.report</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,graph</field>
-<!--            <field name="view_id" ref="pos_sale_by_day_graph"/>-->
-<!--            <field name="domain">[('date','>',(context_today()-datetime.timedelta(days=30)).strftime('%Y-%m-%d'))]</field>-->
         </record>
 
     </data>

@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- ********************************************************************** -->
 <!--    GRAP - Cooperative module for Odoo                                  -->
-<!--    Copyright (C) 2014 GRAP (http://www.grap.coop)                      -->
+<!--    Copyright (C) 2014-Today GRAP (http://www.grap.coop)                -->
 <!--    @author Sylvain LE GAL (https://twitter.com/legalsylvain)           -->
-
+<!--                                                                        -->
 <!--This program is free software: you can redistribute it and/or modify    -->
 <!--it under the terms of the GNU Affero General Public License as          -->
 <!--published by the Free Software Foundation, either version 3 of the      -->
 <!--License, or (at your option) any later version.                         -->
-
+<!--                                                                        -->
 <!--This program is distributed in the hope that it will be useful,         -->
 <!--but WITHOUT ANY WARRANTY; without even the implied warranty of          -->
 <!--MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the           -->
 <!--GNU Affero General Public License for more details.                     -->
-
+<!--                                                                        -->
 <!--You should have received a copy of the GNU Affero General Public License-->
 <!--along with this program.  If not, see <http://www.gnu.org/licenses/>.   -->
 <!-- ********************************************************************** -->
@@ -23,7 +23,7 @@
         <record id="view_grap_member_search" model="ir.ui.view">
             <field name="model">grap.member</field>
             <field name="arch" type="xml">
-                <search string="Member"> 
+                <search> 
                    <field name="name" string="Member" />
                     <field name="college_id"/>
                     <field name="date_capital_entry"/>
@@ -38,7 +38,7 @@
         <record id="view_grap_member_tree" model="ir.ui.view">
             <field name="model">grap.member</field>
             <field name="arch" type="xml">
-                <tree string="Members">
+                <tree>
                     <field name="name"/>
                     <field name="zip"/>
                     <field name="city"/>
@@ -53,7 +53,7 @@
         <record id="view_grap_member_form" model="ir.ui.view">
             <field name="model">grap.member</field>
             <field name="arch" type="xml">
-                <form string="Member" version="7.0">
+                <form>
                     <sheet>
                         <group>
                             <group>
@@ -90,8 +90,8 @@
         <record id="view_grap_people_search" model="ir.ui.view">
             <field name="model">grap.people</field>
             <field name="arch" type="xml">
-                <search string="People"> 
-                   <field name="name" string="People" />
+                <search> 
+                   <field name="name"/>
                    <field name="mandate_ids" string="Mandates" />
                    <field name="working_email" string="Email" />
                    <field name="skills"/>
@@ -106,7 +106,7 @@
         <record id="view_grap_people_tree" model="ir.ui.view">
             <field name="model">grap.people</field>
             <field name="arch" type="xml">
-                <tree string="People">
+                <tree>
                     <field name="name"/>
                     <field name="working_email"/>
                     <field name="working_phone"/>
@@ -120,7 +120,7 @@
         <record id="view_grap_people_form" model="ir.ui.view">
             <field name="model">grap.people</field>
             <field name="arch" type="xml">
-                <form string="People" version="7.0">
+                <form>
                     <sheet>
                         <group>
                             <group col="4">
@@ -207,7 +207,7 @@
         <record id="view_grap_activity_search" model="ir.ui.view">
             <field name="model">grap.activity</field>
             <field name="arch" type="xml">
-                <search string="Activity"> 
+                <search> 
                    <field name="code"/>
                    <field name="name"/>
                    <field name="category_ids"/>
@@ -229,7 +229,7 @@
         <record id="view_grap_activity_tree" model="ir.ui.view">
             <field name="model">grap.activity</field>
             <field name="arch" type="xml">
-                <tree string="Activities">
+                <tree>
                     <field name="code"/>
                     <field name="name"/>
                     <field name="zip"/>
@@ -246,13 +246,13 @@
         <record id="view_grap_activity_form" model="ir.ui.view">
             <field name="model">grap.activity</field>
             <field name="arch" type="xml">
-                <form string="Activity" version="7.0">
+                <form>
                     <header>
-                        <button name="state_previous" string="Previous State" type="object"
-                            states="progress,validated,working,obsolete" 
+                        <button name="button_state_previous" string="Previous State" type="object"
+                            states="progress,validated,working,obsolete" attrs="{'disabled': 1}"
                             groups="grap_cooperative.res_group_grap_cooperative_manager"/>
-                        <button name="state_next" string="Next State" type="object"
-                            states="draft,progress,validated,working"
+                        <button name="button_state_next" string="Next State" type="object"
+                            states="draft,progress,validated,working" attrs="{'disable': 1}"
                             groups="grap_cooperative.res_group_grap_cooperative_manager"/>
                         <field name="state" widget="statusbar"/>
                     </header>
@@ -276,9 +276,9 @@
                                     <field name="fte"/>
                                     <field name="siret"/>
                                     <field name="vat"/>
-                                    <field name="date_in" string="Business In Date"
+                                    <field name="date_in"
                                         attrs="{'invisible':[('state','not in',['working','obsolete'])]}"/>
-                                    <field name="date_out" string="Business Out Date"
+                                    <field name="date_out"
                                         attrs="{'invisible':[('state','not in',['obsolete'])]}"/>
                             </group>
                         </group>
@@ -339,7 +339,7 @@
                                     <div style="height:40px; width:200px; border-bottom:1px solid #999999;">
                                         <div style="width:200px; text-align:center;">
                                             <a type="edit">
-                                                <field name="name"/>
+                                                <field name="activity_name"/>
                                             </a>
                                         </div>
                                         <div style="width:200px; text-align:center; font-style:italic;color:gray;">
@@ -374,7 +374,7 @@
         <record id="view_grap_college_tree" model="ir.ui.view">
             <field name="model">grap.college</field>
             <field name="arch" type="xml">
-                <tree string="Colleges">
+                <tree>
                     <field name="name"/>
                     <field name="percentage"/>
                     <field name="member_count"/>
@@ -385,7 +385,7 @@
         <record id="view_grap_college_form" model="ir.ui.view">
             <field name="model">grap.college</field>
             <field name="arch" type="xml">
-                <form string="College" version="7.0">
+                <form>
                     <sheet>
                         <group>
                             <group>
@@ -409,7 +409,7 @@
         <record id="view_grap_mandate_tree" model="ir.ui.view">
             <field name="model">grap.mandate</field>
             <field name="arch" type="xml">
-                <tree string="Mandates">
+                <tree>
                     <field name="name"/>
                     <field name="people_count"/>
                 </tree>
@@ -419,7 +419,7 @@
         <record id="view_grap_mandate_form" model="ir.ui.view">
             <field name="model">grap.mandate</field>
             <field name="arch" type="xml">
-                <form string="Mandate" version="7.0">
+                <form>
                     <sheet>
                         <group>
                             <group>
@@ -443,7 +443,7 @@
         <record id="view_grap_category_tree" model="ir.ui.view">
             <field name="model">grap.category</field>
             <field name="arch" type="xml">
-                <tree string="Categories">
+                <tree>
                     <field name="name"/>
                     <field name="activity_count"/>
                 </tree>
@@ -453,7 +453,7 @@
         <record id="view_grap_category_form" model="ir.ui.view">
             <field name="model">grap.category</field>
             <field name="arch" type="xml">
-                <form string="Category" version="7.0">
+                <form>
                     <sheet>
                         <group>
                             <group>
@@ -477,7 +477,7 @@
         <record id="view_grap_type_tree" model="ir.ui.view">
             <field name="model">grap.type</field>
             <field name="arch" type="xml">
-                <tree string="Types">
+                <tree>
                     <field name="name"/>
                     <field name="activity_count"/>
                 </tree>
@@ -487,7 +487,7 @@
         <record id="view_grap_type_form" model="ir.ui.view">
             <field name="model">grap.type</field>
             <field name="arch" type="xml">
-                <form string="Type" version="7.0">
+                <form>
                     <sheet>
                         <group>
                             <group>
@@ -511,7 +511,7 @@
          <record id="todo_task_search" model="ir.ui.view">
             <field name="model">grap.todo.task</field>
             <field name="arch" type="xml">
-                <search string="Search Tasks">
+                <search>
                     <field name="name" string="Name"/>
                     <field name="state"/>
                     <field name="importance"/>
@@ -529,8 +529,7 @@
         <record id="view_grap_todo_task_tree" model="ir.ui.view">
             <field name="model">grap.todo.task</field>
             <field name="arch" type="xml">
-                <tree string="Todo Tasks"
-                    colors="
+                <tree colors="
                     blue: state in ('1_draft', 'draft');
                     DarkBlue: state in ('2_qualified', 'qualified');
                     brown:state in ('3_in_progress', 'in_progress');
@@ -551,12 +550,12 @@
         <record id="view_grap_todo_task_form" model="ir.ui.view">
             <field name="model">grap.todo.task</field>
             <field name="arch" type="xml">
-                <form string="Todo Task" version="7.0">
+                <form>
                     <header>
-                        <button name="state_previous" string="Previous State" type="object"
+                        <button name="button_state_previous" string="Previous State" type="object"
                             states="2_qualified,3_in_progress,4_waiting_migration,5_done,6_canceled" 
                             groups="grap_cooperative.res_group_grap_cooperative_manager"/>
-                        <button name="state_next" string="Next State" type="object"
+                        <button name="button_state_next" string="Next State" type="object"
                             states="1_draft,2_qualified,3_in_progress,4_waiting_migration,5_done" 
                             groups="grap_cooperative.res_group_grap_cooperative_manager"/>
                         <field name="state" widget="statusbar"/>
@@ -596,7 +595,7 @@
         <record id="view_timesheet_search" model="ir.ui.view">
             <field name="model">grap.timesheet</field>
             <field name="arch" type="xml">
-                <search string="Search Tasks">
+                <search>
                     <field name="worker_id"/>
                     <field name="date"/>
                     <filter name="filter_today" string="Today" domain="[('date', '>=', time.strftime('%%Y-%%m-%%d 00:00:00'))]" />
@@ -607,9 +606,9 @@
         <record id="view_timesheet_tree" model="ir.ui.view">
             <field name="model">grap.timesheet</field>
             <field name="arch" type="xml">
-                <tree string="TimeSheet" editable="top">
+                <tree editable="top">
                     <field name="type_id"/>
-                    <field name="timesheet_group_id" on_change="on_change_timesheet_group_id(timesheet_group_id)"/>
+                    <field name="timesheet_group_id"/>
                     <field name="activity_ids" widget="many2many_tags"/>
                     <field name="amount" widget="float_time"/>
                     <field name="name"/>
@@ -624,8 +623,8 @@
         <record id="view_timesheet_type_tree" model="ir.ui.view">
             <field name="model">grap.timesheet.type</field>
             <field name="arch" type="xml">
-                <tree string="TimeSheet Type">
-                    <field name="complete_name"/>
+                <tree>
+                    <field name="display_name"/>
                     <field name="parent_id"/>
                     <field name="active" />
                 </tree>
@@ -635,7 +634,7 @@
         <record id="view_timesheet_type_form" model="ir.ui.view">
             <field name="model">grap.timesheet.type</field>
             <field name="arch" type="xml">
-                <form string="TimeSheet Type" version="7.0">
+                <form>
                     <sheet>
                         <group>
                             <group>
@@ -644,7 +643,7 @@
                             </group>
                             <group>
                                 <field name="parent_id"/>
-                                <field name="complete_name" />
+                                <field name="display_name" />
                             </group>
                         </group>
                     </sheet>
@@ -656,7 +655,7 @@
         <record id="view_timesheet_group_tree" model="ir.ui.view">
             <field name="model">grap.timesheet.group</field>
             <field name="arch" type="xml">
-                <tree string="TimeSheet Group">
+                <tree>
                     <field name="name"/>
                     <field name="activity_ids"/>
                 </tree>
@@ -666,7 +665,7 @@
         <record id="view_timesheet_group_form" model="ir.ui.view">
             <field name="model">grap.timesheet.group</field>
             <field name="arch" type="xml">
-                <form string="TimeSheet Group" version="7.0">
+                <form>
                     <sheet>
                         <group>
                             <group>
@@ -681,11 +680,11 @@
             </field>
         </record>
 
-<!-- View : grap.timesheet.group -->
+<!-- View : grap.timesheet.report -->
         <record id="view_timesheet_report_search" model="ir.ui.view">
             <field name="model">grap.timesheet.report</field>
             <field name="arch" type="xml">
-                <search string="TimeSheet Report"> 
+                <search> 
                    <field name="worker_id"/>
                     <field name="type_id"/>
                     <field name="activity_id"/>
@@ -702,7 +701,7 @@
         <record id="view_timesheet_report_tree" model="ir.ui.view">
             <field name="model">grap.timesheet.report</field>
         <field name="arch" type="xml">
-            <tree string="ThimeSheet Report" create="false">
+            <tree create="false">
                 <field name="date"/>
                 <field name="worker_id"/>
                 <field name="activity_id"/>
@@ -716,7 +715,7 @@
         <record id="view_timesheet_report_graph" model="ir.ui.view">
             <field name="model">grap.timesheet.report</field>
          <field name="arch" type="xml">
-                <graph string="ThimeSheet Report" type="bar">
+                <graph type="bar">
                     <field name="week"/>
                     <field name="amount" operator="+"/>
                 </graph>

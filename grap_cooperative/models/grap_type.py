@@ -2,7 +2,7 @@
 ##############################################################################
 #
 #    GRAP - Cooperative module for Odoo
-#    Copyright (C) 2014 GRAP (http://www.grap.coop)
+#    Copyright (C) 2014-Today GRAP (http://www.grap.coop)
 #    @author Sylvain LE GAL (https://twitter.com/legalsylvain)
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -20,25 +20,24 @@
 #
 ##############################################################################
 
-from openerp.osv import fields
-from openerp.osv.orm import Model
+from openerp import models, fields, api
 
 
-class grap_type(Model):
-    _description = 'Types'
+class GrapType(models.Model):
     _name = 'grap.type'
 
     # Columns section
-    def _get_activity_count(self, cr, uid, ids, field_name, arg, context=None):
-        res = {}
-        for gt in self.browse(cr, uid, ids, context):
-            res[gt.id] = len(gt.activity_ids)
-        return res
+    name = fields.Char(string='Name', required=True)
 
-    _columns = {
-        'name': fields.char('Name', size=128, required=True),
-        'activity_ids': fields.one2many(
-            'grap.activity', 'type_id', 'Activities'),
-        'activity_count': fields.function(
-            _get_activity_count, type='integer', string='Activities count')
-    }
+    activity_ids = fields.One2many(
+        comodel_name='grap.activity', inverse_name='type_id',
+        string='Activities')
+
+    activity_count = fields.Integer(
+        compute='_compute_activity_count', string='Activities count')
+
+    # Compute Section
+    @api.one
+    @api.depends('activity_ids')
+    def _compute_activity_count(self):
+        self.activity_count = len(self.activity_ids)
