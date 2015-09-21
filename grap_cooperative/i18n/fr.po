@@ -1,13 +1,13 @@
-# Translation of OpenERP Server.
+# Translation of Odoo Server.
 # This file contains the translation of the following modules:
 #	* grap_cooperative
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: OpenERP Server 7.0\n"
+"Project-Id-Version: Odoo Server 8.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-05-26 10:06+0000\n"
-"PO-Revision-Date: 2015-05-26 10:06+0000\n"
+"POT-Creation-Date: 2015-09-21 10:37+0000\n"
+"PO-Revision-Date: 2015-09-21 10:37+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -16,20 +16,20 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: grap_cooperative
-#: view:grap.activity:0
+#: view:grap.activity:grap_cooperative.view_grap_activity_tree
 msgid "# of FTE"
 msgstr "# d'ETP"
 
 #. module: grap_cooperative
-#: view:grap.timesheet.report:0
+#: view:grap.timesheet.report:grap_cooperative.view_timesheet_report_tree
 msgid "# of Lines"
 msgstr "# de Lignes"
 
 #. module: grap_cooperative
-#: code:addons/grap_cooperative/model/grap_activity_people.py:39
+#: code:addons/grap_cooperative/models/grap_activity_people.py:57
 #, python-format
-msgid "%s (%s FTE)"
-msgstr "%s (%s ETP)"
+msgid "%s (%d FTE)"
+msgstr "%s (%d FTE)"
 
 #. module: grap_cooperative
 #: sql_constraint:grap.activity.people:0
@@ -52,45 +52,34 @@ msgid "Active"
 msgstr "Active"
 
 #. module: grap_cooperative
-#: code:_description:0
-#: view:grap.activity:0
-#: view:grap.category:0
+#: view:grap.category:grap_cooperative.view_grap_category_form
 #: field:grap.category,activity_ids:0
 #: field:grap.people,activity_ids:0
 #: field:grap.timesheet,activity_ids:0
 #: field:grap.timesheet.group,activity_ids:0
-#: view:grap.type:0
+#: view:grap.type:grap_cooperative.view_grap_type_form
 #: field:grap.type,activity_ids:0
 #: model:ir.actions.act_window,name:grap_cooperative.action_grap_activity
-#: model:ir.model,name:grap_cooperative.model_grap_activity
 #: model:ir.ui.menu,name:grap_cooperative.menu_activity
-#, python-format
 msgid "Activities"
 msgstr "Activités"
 
 #. module: grap_cooperative
-#: field:grap.timesheet,activity_qty:0
-msgid "Activities Quantity"
-msgstr "Nombre d'activités"
-
-#. module: grap_cooperative
-#: field:grap.category,activity_count:0
-#: field:grap.type,activity_count:0
-msgid "Activities count"
-msgstr "Nombre d'activités"
-
-#. module: grap_cooperative
-#: view:grap.activity:0
 #: field:grap.activity.people,activity_id:0
-#: view:grap.timesheet.report:0
+#: view:grap.timesheet.report:grap_cooperative.view_timesheet_report_search
 #: field:grap.timesheet.report,activity_id:0
 msgid "Activity"
 msgstr "Activité"
 
 #. module: grap_cooperative
-#: view:grap.activity:0
+#: view:grap.activity:grap_cooperative.view_grap_activity_form
 msgid "Activity Contact"
 msgstr "Contact"
+
+#. module: grap_cooperative
+#: field:grap.activity,activity_name:0
+msgid "Activity Name"
+msgstr "Nom de l'activité"
 
 #. module: grap_cooperative
 #: field:grap.timesheet.report,amount:0
@@ -101,13 +90,6 @@ msgstr "Quantité"
 #: field:grap.timesheet,amount_per_activity:0
 msgid "Amount Per Activity"
 msgstr "Quantité par Activité"
-
-#. module: grap_cooperative
-#: code:_description:0
-#: model:ir.model,name:grap_cooperative.model_grap_timesheet_report
-#, python-format
-msgid "Analysis of TimeSheet"
-msgstr "Analyse de Feuille de Temps"
 
 #. module: grap_cooperative
 #: field:grap.todo.task,applicant_ids:0
@@ -130,14 +112,14 @@ msgid "Average"
 msgstr "Moyenne"
 
 #. module: grap_cooperative
-#: view:grap.activity:0
+#: field:grap.activity,date_in:0
 msgid "Business In Date"
-msgstr "Début économique"
+msgstr "Date de début économique"
 
 #. module: grap_cooperative
-#: view:grap.activity:0
+#: field:grap.activity,date_out:0
 msgid "Business Out Date"
-msgstr "Fin économique"
+msgstr "Date de fin économique"
 
 #. module: grap_cooperative
 #: selection:grap.todo.task,state:0
@@ -151,23 +133,10 @@ msgstr "Slogan"
 
 #. module: grap_cooperative
 #: field:grap.activity,category_ids:0
-#: view:grap.category:0
 #: model:ir.actions.act_window,name:grap_cooperative.action_grap_category
 #: model:ir.ui.menu,name:grap_cooperative.menu_category
 msgid "Categories"
 msgstr "Catégories"
-
-#. module: grap_cooperative
-#: view:grap.category:0
-msgid "Category"
-msgstr "Catégorie"
-
-#. module: grap_cooperative
-#: code:_description:0
-#: model:ir.model,name:grap_cooperative.model_grap_category
-#, python-format
-msgid "Category of activities"
-msgstr "Catégorie d'activités"
 
 #. module: grap_cooperative
 #: field:grap.member,city:0
@@ -175,57 +144,73 @@ msgid "City"
 msgstr "Ville"
 
 #. module: grap_cooperative
-#: view:grap.activity:0
-#: view:grap.college:0
-#: view:grap.member:0
+#: view:grap.activity:grap_cooperative.view_grap_activity_search
+#: view:grap.member:grap_cooperative.view_grap_member_search
 #: field:grap.member,college_id:0
-#: view:grap.people:0
+#: view:grap.people:grap_cooperative.view_grap_people_search
 msgid "College"
 msgstr "Collège"
 
 #. module: grap_cooperative
-#: code:_description:0
-#: view:grap.college:0
 #: model:ir.actions.act_window,name:grap_cooperative.action_grap_college
-#: model:ir.model,name:grap_cooperative.model_grap_college
 #: model:ir.ui.menu,name:grap_cooperative.menu_college
-#, python-format
 msgid "Colleges"
 msgstr "Collèges"
 
 #. module: grap_cooperative
-#: field:grap.timesheet.type,complete_name:0
+#: field:grap.timesheet.type,display_name:0
 msgid "Complete Name"
-msgstr "Nom Complet"
+msgstr "Nom complet"
 
 #. module: grap_cooperative
-#: field:grap.activity.people,working_email:0
 #: field:grap.member,working_email:0
 msgid "Contact EMail"
 msgstr "Email de contact"
 
 #. module: grap_cooperative
-#: view:grap.member:0
+#: view:grap.member:grap_cooperative.view_grap_member_form
 msgid "Contact information"
 msgstr "Information sur le contact"
 
 #. module: grap_cooperative
-#: view:grap.member:0
+#: field:grap.activity,create_uid:0
+#: field:grap.activity.people,create_uid:0
+#: field:grap.category,create_uid:0
+#: field:grap.college,create_uid:0
+#: field:grap.mandate,create_uid:0
+#: field:grap.member,create_uid:0
+#: field:grap.people,create_uid:0
+#: field:grap.timesheet,create_uid:0
+#: field:grap.timesheet.group,create_uid:0
+#: field:grap.timesheet.type,create_uid:0
+#: field:grap.todo.task,create_uid:0
+#: field:grap.type,create_uid:0
+msgid "Created by"
+msgstr "Créé par"
+
+#. module: grap_cooperative
+#: field:grap.activity,create_date:0
+#: field:grap.activity.people,create_date:0
+#: field:grap.category,create_date:0
+#: field:grap.college,create_date:0
+#: field:grap.mandate,create_date:0
+#: field:grap.member,create_date:0
+#: field:grap.people,create_date:0
+#: field:grap.timesheet,create_date:0
+#: field:grap.timesheet.group,create_date:0
+#: field:grap.timesheet.type,create_date:0
+#: field:grap.todo.task,create_date:0
+#: field:grap.type,create_date:0
+msgid "Created on"
+msgstr "Créé le"
+
+#. module: grap_cooperative
+#: view:grap.member:grap_cooperative.view_grap_member_tree
 #: field:grap.timesheet,date:0
-#: view:grap.timesheet.report:0
+#: view:grap.timesheet.report:grap_cooperative.view_timesheet_report_search
 #: field:grap.timesheet.report,date:0
 msgid "Date"
 msgstr "Date"
-
-#. module: grap_cooperative
-#: field:grap.activity,date_in:0
-msgid "Date of activity begins to work"
-msgstr "Date de début d'activité économique"
-
-#. module: grap_cooperative
-#: field:grap.activity,date_out:0
-msgid "Date of activity ends to work"
-msgstr "Date de fin d'activité économique"
 
 #. module: grap_cooperative
 #: field:grap.todo.task,note:0
@@ -236,6 +221,16 @@ msgstr "Description"
 #: model:ir.ui.menu,name:grap_cooperative.menu_directory
 msgid "Directory"
 msgstr "Annuaire"
+
+#. module: grap_cooperative
+#: model:ir.actions.act_window,help:grap_cooperative.action_grap_timesheet
+msgid "Display and manage Time Sheets."
+msgstr "Afficher et gérer les feuilles de temps."
+
+#. module: grap_cooperative
+#: model:ir.actions.act_window,help:grap_cooperative.action_grap_timesheet_type
+msgid "Display and manage Timesheet Types."
+msgstr "Afficher et gérer les types de feuilles de temps."
 
 #. module: grap_cooperative
 #: model:ir.actions.act_window,help:grap_cooperative.action_grap_activity
@@ -263,19 +258,9 @@ msgid "Display and manage people of the cooperative."
 msgstr "Afficher et gérer les personnes de la coopératives."
 
 #. module: grap_cooperative
-#: model:ir.actions.act_window,help:grap_cooperative.action_grap_timesheet
-msgid "Display and manage time Sheets."
-msgstr "Afficher et gérer les feuilles de temps."
-
-#. module: grap_cooperative
 #: model:ir.actions.act_window,help:grap_cooperative.action_grap_timesheet_group
 msgid "Display and manage timesheet Groups."
 msgstr "Afficher et gérer les groupes d'activités."
-
-#. module: grap_cooperative
-#: model:ir.actions.act_window,help:grap_cooperative.action_grap_timesheet_type
-msgid "Display and manage timesheet Types."
-msgstr "Afficher et gérer les types de travail."
 
 #. module: grap_cooperative
 #: model:ir.actions.act_window,help:grap_cooperative.action_grap_todo_task
@@ -298,7 +283,7 @@ msgid "Draft"
 msgstr "Non étudié"
 
 #. module: grap_cooperative
-#: view:grap.people:0
+#: view:grap.people:grap_cooperative.view_grap_people_search
 msgid "Email"
 msgstr "Email"
 
@@ -308,25 +293,14 @@ msgid "Entry date In Capital"
 msgstr "Date d'entrée au capital"
 
 #. module: grap_cooperative
-#: field:grap.activity,fte:0
-#: field:grap.activity.people,fte:0
-msgid "FTE"
-msgstr "ETP"
-
-#. module: grap_cooperative
 #: field:grap.people,first_name:0
 msgid "First name"
 msgstr "Prénom"
 
 #. module: grap_cooperative
-#: help:grap.activity.people,fte:0
+#: field:grap.activity.people,fte:0
 msgid "Full Time Equilalent"
 msgstr "Equivalent Temps Plein"
-
-#. module: grap_cooperative
-#: help:grap.activity,fte:0
-msgid "Full Time Equivalent."
-msgstr "Equivalent Temps Plein."
 
 #. module: grap_cooperative
 #: model:ir.ui.menu,name:grap_cooperative.menu_grap_root
@@ -334,27 +308,37 @@ msgid "GRAP"
 msgstr "GRAP"
 
 #. module: grap_cooperative
-#: view:grap.activity:0
-#: view:grap.member:0
-#: view:grap.people:0
+#: model:res.groups,name:grap_cooperative.res_group_grap_cooperative_manager
+msgid "GRAP - Cooperative Manager"
+msgstr "GRAP - Gestionnaire de la coopérative"
+
+#. module: grap_cooperative
+#: model:res.groups,name:grap_cooperative.res_group_grap_computer_manager
+msgid "GRAP - IT Manager"
+msgstr "GRAP - Responsable Informatique"
+
+#. module: grap_cooperative
+#: model:res.groups,name:grap_cooperative.res_group_grap_timesheet_user
+msgid "GRAP - Timesheet User"
+msgstr "GRAP - Utilisateur de la feuille de temps"
+
+#. module: grap_cooperative
+#: view:grap.activity:grap_cooperative.view_grap_activity_form
+#: view:grap.member:grap_cooperative.view_grap_member_form
+#: view:grap.people:grap_cooperative.view_grap_people_form
 msgid "GRAP information"
 msgstr "Information coopérative"
 
 #. module: grap_cooperative
-#: field:grap.timesheet,timesheet_group_id:0
-msgid "Group"
-msgstr "Groupe"
-
-#. module: grap_cooperative
-#: view:grap.todo.task:0
+#: view:grap.todo.task:grap_cooperative.todo_task_search
 msgid "Group By..."
 msgstr "Regrouper Par..."
 
 #. module: grap_cooperative
-#: view:grap.activity:0
-#: view:grap.member:0
-#: view:grap.people:0
-#: view:grap.timesheet.report:0
+#: view:grap.activity:grap_cooperative.view_grap_activity_search
+#: view:grap.member:grap_cooperative.view_grap_member_search
+#: view:grap.people:grap_cooperative.view_grap_people_search
+#: view:grap.timesheet.report:grap_cooperative.view_timesheet_report_search
 msgid "Group by..."
 msgstr "Regrouper par ..."
 
@@ -362,11 +346,6 @@ msgstr "Regrouper par ..."
 #: selection:grap.todo.task,importance:0
 msgid "High"
 msgstr "Haute"
-
-#. module: grap_cooperative
-#: field:grap.timesheet,amount:0
-msgid "Hours"
-msgstr "Heures"
 
 #. module: grap_cooperative
 #: field:grap.activity,hr_interlocutor_id:0
@@ -379,12 +358,29 @@ msgid "Human Ressources Performed for Activities"
 msgstr "Travail RH réalisé pour les activités"
 
 #. module: grap_cooperative
+#: field:grap.activity,id:0
+#: field:grap.activity.people,id:0
+#: field:grap.category,id:0
+#: field:grap.college,id:0
+#: field:grap.mandate,id:0
+#: field:grap.member,id:0
+#: field:grap.people,id:0
+#: field:grap.timesheet,id:0
+#: field:grap.timesheet.group,id:0
+#: field:grap.timesheet.report,id:0
+#: field:grap.timesheet.type,id:0
+#: field:grap.todo.task,id:0
+#: field:grap.type,id:0
+msgid "ID"
+msgstr "ID"
+
+#. module: grap_cooperative
 #: field:grap.member,image:0
 msgid "Image"
 msgstr "Image"
 
 #. module: grap_cooperative
-#: view:grap.todo.task:0
+#: view:grap.todo.task:grap_cooperative.todo_task_search
 #: field:grap.todo.task,importance:0
 msgid "Importance"
 msgstr "Importance"
@@ -400,7 +396,7 @@ msgid "In Progress"
 msgstr "En cours"
 
 #. module: grap_cooperative
-#: view:grap.activity:0
+#: view:grap.activity:grap_cooperative.view_grap_activity_search
 msgid "In progress, validated or working"
 msgstr "A l'étude, validé ou en activité"
 
@@ -410,7 +406,7 @@ msgid "Information"
 msgstr "Information"
 
 #. module: grap_cooperative
-#: view:grap.activity:0
+#: view:grap.activity:grap_cooperative.view_grap_activity_form
 msgid "Interlocutors"
 msgstr "Interlocuteurs"
 
@@ -418,6 +414,38 @@ msgstr "Interlocuteurs"
 #: field:grap.todo.task,internal_note:0
 msgid "Internal Note"
 msgstr "Note interne"
+
+#. module: grap_cooperative
+#: field:grap.activity,write_uid:0
+#: field:grap.activity.people,write_uid:0
+#: field:grap.category,write_uid:0
+#: field:grap.college,write_uid:0
+#: field:grap.mandate,write_uid:0
+#: field:grap.member,write_uid:0
+#: field:grap.people,write_uid:0
+#: field:grap.timesheet,write_uid:0
+#: field:grap.timesheet.group,write_uid:0
+#: field:grap.timesheet.type,write_uid:0
+#: field:grap.todo.task,write_uid:0
+#: field:grap.type,write_uid:0
+msgid "Last Updated by"
+msgstr "Dernière modification par"
+
+#. module: grap_cooperative
+#: field:grap.activity,write_date:0
+#: field:grap.activity.people,write_date:0
+#: field:grap.category,write_date:0
+#: field:grap.college,write_date:0
+#: field:grap.mandate,write_date:0
+#: field:grap.member,write_date:0
+#: field:grap.people,write_date:0
+#: field:grap.timesheet,write_date:0
+#: field:grap.timesheet.group,write_date:0
+#: field:grap.timesheet.type,write_date:0
+#: field:grap.todo.task,write_date:0
+#: field:grap.type,write_date:0
+msgid "Last Updated on"
+msgstr "Dernière modification le"
 
 #. module: grap_cooperative
 #: field:grap.people,last_name:0
@@ -445,16 +473,7 @@ msgid "Made Days"
 msgstr "Jours réalisés"
 
 #. module: grap_cooperative
-#: code:_description:0
-#: view:grap.mandate:0
-#: model:ir.model,name:grap_cooperative.model_grap_mandate
-#, python-format
-msgid "Mandate"
-msgstr "Mandat"
-
-#. module: grap_cooperative
-#: view:grap.mandate:0
-#: view:grap.people:0
+#: view:grap.people:grap_cooperative.view_grap_people_search
 #: field:grap.people,mandate_ids:0
 #: model:ir.actions.act_window,name:grap_cooperative.action_grap_mandate
 #: model:ir.ui.menu,name:grap_cooperative.menu_mandate
@@ -463,32 +482,23 @@ msgstr "Mandats"
 
 #. module: grap_cooperative
 #: field:grap.activity,grap_member_id:0
-#: view:grap.member:0
+#: view:grap.member:grap_cooperative.view_grap_member_search
 #: field:grap.people,grap_member_id:0
 msgid "Member"
 msgstr "Membre"
 
 #. module: grap_cooperative
-#: code:_description:0
-#: view:grap.college:0
+#: view:grap.college:grap_cooperative.view_grap_college_form
 #: field:grap.college,member_ids:0
 #: field:grap.mandate,people_ids:0
-#: view:grap.member:0
 #: model:ir.actions.act_window,name:grap_cooperative.action_grap_member
-#: model:ir.model,name:grap_cooperative.model_grap_member
 #: model:ir.ui.menu,name:grap_cooperative.menu_member
-#, python-format
 msgid "Members"
 msgstr "Membres"
 
 #. module: grap_cooperative
-#: field:grap.college,member_count:0
-msgid "Members count"
-msgstr "Nombre de membres"
-
-#. module: grap_cooperative
-#: field:grap.activity,activity_name:0
-#: field:grap.activity.people,complete_name:0
+#: view:grap.activity:grap_cooperative.view_grap_activity_search
+#: field:grap.activity.people,name:0
 #: field:grap.category,name:0
 #: field:grap.college,name:0
 #: field:grap.mandate,name:0
@@ -497,15 +507,15 @@ msgstr "Nombre de membres"
 #: field:grap.timesheet.group,name:0
 #: field:grap.timesheet.report,name:0
 #: field:grap.timesheet.type,name:0
-#: view:grap.todo.task:0
+#: view:grap.todo.task:grap_cooperative.todo_task_search
 #: field:grap.todo.task,name:0
 #: field:grap.type,name:0
 msgid "Name"
 msgstr "Nom"
 
 #. module: grap_cooperative
-#: view:grap.activity:0
-#: view:grap.todo.task:0
+#: view:grap.activity:grap_cooperative.view_grap_activity_form
+#: view:grap.todo.task:grap_cooperative.view_grap_todo_task_form
 msgid "Next State"
 msgstr "Passer au prochain état"
 
@@ -515,7 +525,7 @@ msgid "No linked"
 msgstr "Aucun lien"
 
 #. module: grap_cooperative
-#: view:grap.todo.task:0
+#: view:grap.todo.task:grap_cooperative.view_grap_todo_task_form
 msgid "Note"
 msgstr "Note"
 
@@ -530,26 +540,17 @@ msgid "Parent"
 msgstr "Parent"
 
 #. module: grap_cooperative
-#: code:_description:0
 #: field:grap.activity.people,people_id:0
-#: view:grap.mandate:0
-#: view:grap.people:0
+#: view:grap.mandate:grap_cooperative.view_grap_mandate_form
 #: model:ir.actions.act_window,name:grap_cooperative.action_grap_people
-#: model:ir.model,name:grap_cooperative.model_grap_people
 #: model:ir.ui.menu,name:grap_cooperative.menu_people
-#, python-format
 msgid "People"
 msgstr "Personnes"
 
 #. module: grap_cooperative
-#: view:grap.people:0
+#: view:grap.people:grap_cooperative.view_grap_people_form
 msgid "People Contact"
 msgstr "Contact"
-
-#. module: grap_cooperative
-#: field:grap.mandate,people_count:0
-msgid "People count"
-msgstr "Nombre de personnes"
 
 #. module: grap_cooperative
 #: field:grap.college,percentage:0
@@ -557,13 +558,12 @@ msgid "Percentage"
 msgstr "Pourcentage de voix"
 
 #. module: grap_cooperative
-#: view:grap.activity:0
-#: view:grap.todo.task:0
+#: view:grap.activity:grap_cooperative.view_grap_activity_form
+#: view:grap.todo.task:grap_cooperative.view_grap_todo_task_form
 msgid "Previous State"
 msgstr "Passer à l'état précédent"
 
 #. module: grap_cooperative
-#: field:grap.activity.people,private_phone:0
 #: field:grap.people,private_phone:0
 msgid "Private Phone"
 msgstr "Téléphone personnel"
@@ -574,16 +574,9 @@ msgid "Qualified"
 msgstr "Qualifié"
 
 #. module: grap_cooperative
-#: view:grap.people:0
+#: view:grap.people:grap_cooperative.view_grap_people_search
 msgid "Related to an activity"
 msgstr "Liés à une activité"
-
-#. module: grap_cooperative
-#: code:_description:0
-#: model:ir.model,name:grap_cooperative.model_grap_activity_people
-#, python-format
-msgid "Relation between activities and people"
-msgstr "Relation entre activités et personnes"
 
 #. module: grap_cooperative
 #: field:grap.activity,siret:0
@@ -591,37 +584,26 @@ msgid "SIRET"
 msgstr "SIRET"
 
 #. module: grap_cooperative
-#: view:grap.timesheet:0
-#: view:grap.todo.task:0
-msgid "Search Tasks"
-msgstr "Rechercher des tâches"
-
-#. module: grap_cooperative
-#: view:grap.people:0
+#: view:grap.people:grap_cooperative.view_grap_people_form
 #: field:grap.people,description:0
 msgid "Self Description"
 msgstr "Description personnelle"
 
 #. module: grap_cooperative
-#: view:grap.member:0
+#: view:grap.member:grap_cooperative.view_grap_member_search
 msgid "Shareholder"
 msgstr "Membres souscripteurs"
 
 #. module: grap_cooperative
-#: view:grap.member:0
+#: view:grap.member:grap_cooperative.view_grap_member_tree
 msgid "Shares"
 msgstr "Parts"
 
 #. module: grap_cooperative
-#: view:grap.people:0
+#: view:grap.people:grap_cooperative.view_grap_people_form
 #: field:grap.people,skills:0
 msgid "Skills"
 msgstr "Compétences"
-
-#. module: grap_cooperative
-#: help:grap.timesheet,amount:0
-msgid "Specifies the amount of worked hours."
-msgstr "Quantité d'heures travaillées."
 
 #. module: grap_cooperative
 #: field:grap.todo.task,start_date:0
@@ -629,14 +611,14 @@ msgid "Start Date"
 msgstr "Date de début"
 
 #. module: grap_cooperative
-#: view:grap.activity:0
+#: view:grap.activity:grap_cooperative.view_grap_activity_search
 #: field:grap.activity,state:0
 #: field:grap.todo.task,state:0
 msgid "State"
 msgstr "Etat"
 
 #. module: grap_cooperative
-#: view:grap.todo.task:0
+#: view:grap.todo.task:grap_cooperative.todo_task_search
 msgid "Status"
 msgstr "Statut"
 
@@ -661,72 +643,45 @@ msgid "Taxe ID"
 msgstr "N° TVA"
 
 #. module: grap_cooperative
-#: view:grap.timesheet.report:0
-msgid "ThimeSheet Report"
-msgstr "Rapport de Feuille de Temps"
-
-#. module: grap_cooperative
-#: code:_description:0
-#: model:ir.model,name:grap_cooperative.model_grap_timesheet
 #: model:ir.ui.menu,name:grap_cooperative.menu_timesheet
-#, python-format
 msgid "Time Sheet"
 msgstr "Feuille de temps."
 
 #. module: grap_cooperative
-#: code:_description:0
-#: model:ir.model,name:grap_cooperative.model_grap_timesheet_group
-#, python-format
-msgid "Time Sheet Group"
-msgstr "Goupe d'activité"
+#: model:ir.actions.act_window,name:grap_cooperative.action_grap_timesheet_group
+#: model:ir.ui.menu,name:grap_cooperative.menu_timesheet_group
+msgid "Time Sheet Groups"
+msgstr "Groupes de feuille de temps"
 
 #. module: grap_cooperative
-#: code:_description:0
-#: model:ir.model,name:grap_cooperative.model_grap_timesheet_type
-#, python-format
-msgid "Time Sheet type"
-msgstr "Type de travail"
+#: model:ir.actions.act_window,name:grap_cooperative.action_grap_timesheet_report
+#: model:ir.ui.menu,name:grap_cooperative.menu_timesheet_report
+msgid "Time Sheet Report"
+msgstr "Rapports de feuille de temps"
 
 #. module: grap_cooperative
-#: view:grap.timesheet:0
-msgid "TimeSheet"
-msgstr "Feuille de temps"
+#: model:ir.actions.act_window,name:grap_cooperative.action_grap_timesheet_type
+#: model:ir.ui.menu,name:grap_cooperative.menu_timesheet_type
+msgid "Time Sheet Types"
+msgstr "Types de feuille de temps"
 
 #. module: grap_cooperative
-#: view:grap.timesheet.group:0
-msgid "TimeSheet Group"
-msgstr "Groupe d'activité"
+#: model:ir.actions.act_window,name:grap_cooperative.action_grap_timesheet
+#: model:ir.ui.menu,name:grap_cooperative.menu_timesheet_line
+msgid "Time Sheets"
+msgstr "Feuilles de temps"
 
 #. module: grap_cooperative
-#: view:grap.timesheet.report:0
-msgid "TimeSheet Report"
-msgstr "Rapport de feuille de temps"
-
-#. module: grap_cooperative
-#: view:grap.timesheet.type:0
-msgid "TimeSheet Type"
-msgstr "Type de travail"
-
-#. module: grap_cooperative
-#: view:grap.todo.task:0
+#: view:grap.todo.task:grap_cooperative.todo_task_search
 msgid "To do"
 msgstr "A faire"
 
 #. module: grap_cooperative
-#: view:grap.timesheet:0
+#: view:grap.timesheet:grap_cooperative.view_timesheet_search
 msgid "Today"
 msgstr "Aujourd'hui"
 
 #. module: grap_cooperative
-#: code:_description:0
-#: view:grap.todo.task:0
-#: model:ir.model,name:grap_cooperative.model_grap_todo_task
-#, python-format
-msgid "Todo Task"
-msgstr "Tâche à réaliser"
-
-#. module: grap_cooperative
-#: view:grap.todo.task:0
 #: model:ir.actions.act_window,name:grap_cooperative.action_grap_todo_task
 #: model:ir.ui.menu,name:grap_cooperative.menu_todo_task
 msgid "Todo Tasks"
@@ -738,25 +693,20 @@ msgid "Total Days"
 msgstr "Total Jours"
 
 #. module: grap_cooperative
-#: view:grap.member:0
+#: view:grap.member:grap_cooperative.view_grap_member_tree
 msgid "Total of Share"
 msgstr "Total des parts"
 
 #. module: grap_cooperative
-#: view:grap.activity:0
+#: view:grap.activity:grap_cooperative.view_grap_activity_search
 #: field:grap.activity,type_id:0
-#: view:grap.timesheet.report:0
-#: view:grap.type:0
+#: view:grap.timesheet.report:grap_cooperative.view_timesheet_report_search
 msgid "Type"
 msgstr "Type"
 
 #. module: grap_cooperative
-#: code:_description:0
-#: view:grap.type:0
 #: model:ir.actions.act_window,name:grap_cooperative.action_grap_type
-#: model:ir.model,name:grap_cooperative.model_grap_type
 #: model:ir.ui.menu,name:grap_cooperative.menu_type
-#, python-format
 msgid "Types"
 msgstr "Types"
 
@@ -771,7 +721,7 @@ msgid "Validated"
 msgstr "Validé"
 
 #. module: grap_cooperative
-#: view:grap.activity:0
+#: view:grap.activity:grap_cooperative.view_grap_activity_search
 msgid "Validated or working"
 msgstr "Validée ou en activité"
 
@@ -802,14 +752,19 @@ msgid "Work Type"
 msgstr "Type de travail"
 
 #. module: grap_cooperative
+#: field:grap.timesheet,amount:0
+msgid "Worked Hours"
+msgstr "Heures travaillées"
+
+#. module: grap_cooperative
 #: field:grap.timesheet,worker_id:0
-#: view:grap.timesheet.report:0
+#: view:grap.timesheet.report:grap_cooperative.view_timesheet_report_search
 #: field:grap.timesheet.report,worker_id:0
 msgid "Worker"
 msgstr "Travailleur"
 
 #. module: grap_cooperative
-#: view:grap.activity:0
+#: view:grap.activity:grap_cooperative.view_grap_activity_form
 #: field:grap.activity,people_ids:0
 #: field:grap.todo.task,worker_ids:0
 msgid "Workers"
@@ -821,7 +776,6 @@ msgid "Working"
 msgstr "En activité"
 
 #. module: grap_cooperative
-#: field:grap.activity.people,working_phone:0
 #: field:grap.member,working_phone:0
 msgid "Working Phone"
 msgstr "Téléphone professionnel"
@@ -837,21 +791,6 @@ msgid "code"
 msgstr "code"
 
 #. module: grap_cooperative
-#: model:res.groups,name:grap_cooperative.res_group_grap_computer_manager
-msgid "grap computer manager"
-msgstr "Gestionnaire de GRAP - Informatique"
-
-#. module: grap_cooperative
-#: model:res.groups,name:grap_cooperative.res_group_grap_cooperative_manager
-msgid "grap cooperative manager"
-msgstr "Gestion des informations coopératives"
-
-#. module: grap_cooperative
-#: model:res.groups,name:grap_cooperative.res_group_grap_timesheet_user
-msgid "grap timesheet user"
-msgstr "Utilisateur de GRAP - Feuille de temps"
-
-#. module: grap_cooperative
 #: selection:grap.activity,state:0
 msgid "project exited"
 msgstr "projet sorti"
@@ -860,28 +799,4 @@ msgstr "projet sorti"
 #: selection:grap.activity,state:0
 msgid "project in progress"
 msgstr "A l'étude"
-
-#. module: grap_cooperative
-#: model:ir.actions.act_window,name:grap_cooperative.action_grap_timesheet_group
-#: model:ir.ui.menu,name:grap_cooperative.menu_timesheet_group
-msgid "time Sheet Groups"
-msgstr "Groupes d'activités"
-
-#. module: grap_cooperative
-#: model:ir.actions.act_window,name:grap_cooperative.action_grap_timesheet_report
-#: model:ir.ui.menu,name:grap_cooperative.menu_timesheet_report
-msgid "time Sheet Report"
-msgstr "Feuille de Temps (Rapport)"
-
-#. module: grap_cooperative
-#: model:ir.actions.act_window,name:grap_cooperative.action_grap_timesheet_type
-#: model:ir.ui.menu,name:grap_cooperative.menu_timesheet_type
-msgid "time Sheet Types"
-msgstr "Types de travail"
-
-#. module: grap_cooperative
-#: model:ir.actions.act_window,name:grap_cooperative.action_grap_timesheet
-#: model:ir.ui.menu,name:grap_cooperative.menu_timesheet_line
-msgid "time Sheets"
-msgstr "Feuille de Temps"
 

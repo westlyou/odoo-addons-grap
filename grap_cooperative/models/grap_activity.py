@@ -61,10 +61,10 @@ class GrapActivity(models.Model):
     date_validated = fields.Date(string='Validation date by cooperative')
 
     date_in = fields.Date(
-        string='Business In Date', help='Date of activity begins to work')
+        string='Business In Date')
 
     date_out = fields.Date(
-        string='Business Out Date', help='Date of activity ends to work')
+        string='Business Out Date')
 
     type_id = fields.Many2one(
         comodel_name='grap.type', string='Type')
