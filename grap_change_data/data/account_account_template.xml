@@ -1,21 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <openerp>
     <data>
-        <!-- Suppression des comptes 4011, 4017-->
-        <delete model="account.account.template" id="l10n_fr.fr_pcg_pay" />
-        <delete model="account.account.template" id="l10n_fr.pcg_4017"/>
+        <!-- Desactivation des comptes 4011, 4017-->
+        <record model="account.account.template" id="l10n_fr.fr_pcg_pay">
+            <field name="active" eval="False" />
+        </record>
+        <record model="account.account.template" id="l10n_fr.pcg_4017">
+            <field name="active" eval="False" />
+        </record>
+
         <!-- Changement du type de compte 401 (compte 'vue' a compte 'client') -->
         <record model="account.account.template" id="l10n_fr.pcg_401">
             <field name="type">payable</field>
         </record>
 
-        <!-- Suppression des comptes 4111, 4117-->
-        <delete model="account.account.template" id="l10n_fr.fr_pcg_recv" />
-        <delete model="account.account.template" id="l10n_fr.pcg_4117" />
+        <!-- Desactivation des comptes 4111, 4117-->
+        <record model="account.account.template" id="l10n_fr.fr_pcg_recv">
+            <field name="active" eval="False" />
+        </record>
+        <record model="account.account.template" id="l10n_fr.pcg_4117">
+            <field name="active" eval="False" />
+        </record>
         <!-- Changement du type de compte 411 (compte 'vue' a compte 'fournisseur') -->
         <record model="account.account.template" id="l10n_fr.pcg_411">
             <field name="type">receivable</field>
         </record>
+
+        <!-- Renommage de compte de taxes 445711, 445712  -->
+        <record model="account.account.template" id="l10n_fr.pcg_445711">
+            <field name="name">TVA collectée 20%</field>
+        </record>
+
+        <record model="account.account.template" id="l10n_fr.pcg_445712">
+            <field name="name">TVA collectée 5.5%</field>
+        </record>
+
 
         <!-- Création d'un nouveau compte 5312-->
         <record model="account.account.template" id="pcg_5312">
@@ -26,10 +45,16 @@
             <field name="parent_id" ref="l10n_fr.pcg_531"/>
         </record>
 
-        <!-- Suppression des comptes 6011, 6012, 6013-->
-        <delete model="account.account.template" id="l10n_fr.pcg_6011" />
-        <delete model="account.account.template" id="l10n_fr.pcg_6012" />
-        <delete model="account.account.template" id="l10n_fr.pcg_6013" />
+        <!-- Suppression des comptes 6011, 6012, 6013, 6017-->
+        <record model="account.account.template" id="l10n_fr.pcg_6011">
+            <field name="active" eval="False" />
+        </record>
+        <record model="account.account.template" id="l10n_fr.pcg_6012">
+            <field name="active" eval="False" />
+        </record>
+        <record model="account.account.template" id="l10n_fr.pcg_6017">
+            <field name="active" eval="False" />
+        </record>
         <!-- Changement du type de compte 601 (compte 'vue' a compte 'normal') -->
         <record model="account.account.template" id="l10n_fr.pcg_601">
             <field name="type">other</field>
@@ -87,17 +112,27 @@
         </record>
 
         <!-- Suppression des comptes 7011, 7012 -->
-        <delete model="account.account.template" id="l10n_fr.pcg_7011" />
-        <delete model="account.account.template" id="l10n_fr.pcg_7012" />
+        <record model="account.account.template" id="l10n_fr.pcg_7011">
+            <field name="active" eval="False" />
+        </record>
+        <record model="account.account.template" id="l10n_fr.pcg_7012">
+            <field name="active" eval="False" />
+        </record>
         <!-- Changement du type de compte 701 (compte 'vue' a compte 'normal') -->
         <record model="account.account.template" id="l10n_fr.pcg_701">
             <field name="type">other</field>
         </record>
 
         <!-- Suppression des comptes 7071, 7072, 7073-->
-        <delete model="account.account.template" id="l10n_fr.pcg_7071" />
-        <delete model="account.account.template" id="l10n_fr.pcg_7072" />
-        <delete model="account.account.template" id="l10n_fr.pcg_7073" />
+        <record model="account.account.template" id="l10n_fr.pcg_7071">
+            <field name="active" eval="False" />
+        </record>
+        <record model="account.account.template" id="l10n_fr.pcg_7072">
+            <field name="active" eval="False" />
+        </record>
+        <record model="account.account.template" id="l10n_fr.pcg_7073">
+            <field name="active" eval="False" />
+        </record>
         <!-- Changement du type de compte 707 (compte 'vue' a compte 'normal') -->
         <record model="account.account.template" id="l10n_fr.fr_pcg_sale">
             <field name="type">other</field>

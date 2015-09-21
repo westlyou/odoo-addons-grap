@@ -20,24 +20,11 @@
 #
 ##############################################################################
 
-{
-    'name': 'GRAP - Change Data',
-    'version': '8.0.2.0.0',
-    'category': 'GRAP - Custom',
-    'author': 'GRAP',
-    'website': 'http://www.grap.coop',
-    'license': 'AGPL-3',
-    'depends': [
-        'product',
-        'account',
-        'l10n_fr',
-    ],
-    'data': [
-        'data/product_category.yml',
-        'data/account_account_template.xml',
-        'data/account_chart_template.xml',
-    ],
-    'demo': [
-        'demo/res_groups.yml',
-    ],
-}
+
+from openerp import models, fields
+
+
+class AccountAccountTemplate(models.Model):
+    _inherit = 'account.account.template'
+
+    active = fields.Boolean(string='Active', default=True)

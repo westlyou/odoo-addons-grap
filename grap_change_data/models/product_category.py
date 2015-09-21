@@ -2,7 +2,7 @@
 ##############################################################################
 #
 #    GRAP - Change Data module for Odoo
-#    Copyright (C) 2015 GRAP (http://www.grap.coop)
+#    Copyright (C) 2015-Today GRAP (http://www.grap.coop)
 #    @author Sylvain LE GAL (https://twitter.com/legalsylvain)
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -21,17 +21,10 @@
 ##############################################################################
 
 
-from openerp.osv.orm import Model
-from openerp.osv import fields
+from openerp import models, fields
 
 
-class product_category(Model):
+class ProductCategory(models.Model):
     _inherit = 'product.category'
 
-    _columns = {
-        'active': fields.boolean('active'),
-    }
-
-    _defaults = {
-        'active': True,
-    }
+    active = fields.Boolean(string='Active', default=True)

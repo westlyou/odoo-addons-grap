@@ -20,24 +20,14 @@
 #
 ##############################################################################
 
-{
-    'name': 'GRAP - Change Data',
-    'version': '8.0.2.0.0',
-    'category': 'GRAP - Custom',
-    'author': 'GRAP',
-    'website': 'http://www.grap.coop',
-    'license': 'AGPL-3',
-    'depends': [
-        'product',
-        'account',
-        'l10n_fr',
-    ],
-    'data': [
-        'data/product_category.yml',
-        'data/account_account_template.xml',
-        'data/account_chart_template.xml',
-    ],
-    'demo': [
-        'demo/res_groups.yml',
-    ],
-}
+- !record {model: res.groups, id: base.group_no_one}:
+    users:
+        - base.user_root
+
+- !record {model: res.groups, id: base.group_sale_manager}:
+    users:
+        - base.user_root
+
+- !record {model: res.groups, id: account.group_account_manager}:
+    users:
+        - base.user_root
