@@ -28,6 +28,5 @@ from openerp.addons import decimal_precision as dp
 class PricelistPartnerinfo(models.Model):
     _inherit = 'pricelist.partnerinfo'
 
-    _columns = {
     price = fields.Float(
         digits_compute=dp.get_precision('GRAP Purchase Unit Price'))

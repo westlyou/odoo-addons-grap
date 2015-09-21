@@ -1,8 +1,8 @@
 # -*- encoding: utf-8 -*-
 ##############################################################################
 #
-#    GRAP - Change Translation module for Odoo
-#    Copyright (C) 2013-2014 GRAP (http://www.grap.coop)
+#    GRAP - Change Precision module for Odoo
+#    Copyright (C) 2014-Today GRAP (http://www.grap.coop)
 #    @author Sylvain LE GAL (https://twitter.com/legalsylvain)
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -20,13 +20,14 @@
 #
 ##############################################################################
 
-from openerp.osv.orm import Model
-from openerp.osv import fields
+- !record {model: res.groups, id: product.group_sale_pricelist}:
+    users:
+        - base.user_root
 
+- !record {model: res.groups, id: account.group_account_manager}:
+    users:
+        - base.user_root
 
-class account_payment_term(Model):
-    _inherit = "account.payment.term"
-    _columns = {
-        'name': fields.char(
-            'Payment Term', size=64, translate=False, required=True),
-    }
+- !record {model: res.groups, id: base.group_no_one}:
+    users:
+        - base.user_root

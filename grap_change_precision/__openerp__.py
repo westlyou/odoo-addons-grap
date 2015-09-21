@@ -23,7 +23,7 @@
 {
     'name': 'GRAP - Change Precision',
     'version': '8.0.2.0.0',
-    'summary': 'Change the precisions names and values of some fields',
+    'summary': 'Change the precisions of some fields for GRAP',
     'category': 'GRAP - Custom',
     'author': 'GRAP',
     'website': 'http://www.grap.coop',
@@ -37,5 +37,8 @@
     ],
     'data': [
         'data/decimal_precision.xml',
+    ],
+    'demo': [
+        'demo/res_groups.yml',
     ],
 }

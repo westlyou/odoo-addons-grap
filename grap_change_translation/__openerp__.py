@@ -2,7 +2,7 @@
 ##############################################################################
 #
 #    GRAP - Change Translation module for Odoo
-#    Copyright (C) 2013-2014 GRAP (http://www.grap.coop)
+#    Copyright (C) 2013-Today GRAP (http://www.grap.coop)
 #    @author Sylvain LE GAL (https://twitter.com/legalsylvain)
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -22,30 +22,9 @@
 
 {
     'name': 'GRAP - Change translation',
-    'version': '2.0',
+    'version': '8.0.2.0.0',
+    'summary': 'Disable translation mechanism for some fields for GRAP',
     'category': 'GRAP - Custom',
-    'description': """
-Disable the mechanism of translation for the following field:
-=============================================================
-
-* **account_payment_term**: name;
-* **account_tax**: name;
-* **pos_category**: name;
-* **product_category**: name;
-* **product_pricelist**: name;
-* **product_template**: name, description, description_purchase,"""
-    """ description_sale;
-* **product_ul**: name ;
-* **product_uom**: name ;
-* **res_partner_category**: name;
-* **stock_location**: name;
-
-Copyright, Author and Licence :
--------------------------------
-    * Copyright : 2014, Groupement Régional Alimentaire de Proximité;
-    * Author : Sylvain LE GAL (https://twitter.com/legalsylvain);
-    * Licence : AGPL-3 (http://www.gnu.org/licenses/)
-    """,
     'author': 'GRAP',
     'website': 'http://www.grap.coop',
     'license': 'AGPL-3',
@@ -54,5 +33,8 @@ Copyright, Author and Licence :
         'product',
         'stock',
         'point_of_sale',
+    ],
+    'demo': [
+        'demo/res_groups.yml',
     ],
 }

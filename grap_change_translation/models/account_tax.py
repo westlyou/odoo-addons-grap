@@ -1,8 +1,8 @@
 # -*- encoding: utf-8 -*-
 ##############################################################################
 #
-#    GRAP - Change Precision module for Odoo
-#    Copyright (C) 2014-Today GRAP (http://www.grap.coop)
+#    GRAP - Change Translation module for Odoo
+#    Copyright (C) 2013-Today GRAP (http://www.grap.coop)
 #    @author Sylvain LE GAL (https://twitter.com/legalsylvain)
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -20,15 +20,10 @@
 #
 ##############################################################################
 
-
-#from openerp import models, fields
-#from openerp.addons import decimal_precision as dp
+from openerp import models, fields
 
 
-#class PosOrderLine(models.Model):
-#    _inherit = 'pos.order.line'
+class AccountTax(models.Model):
+    _inherit = 'account.tax'
 
-#        'qty': fields.float(
-#            'Quantity',
-#            digits_compute=dp.get_precision('Product UoS')),
-#    }
+    name = fields.Char(translate=False)

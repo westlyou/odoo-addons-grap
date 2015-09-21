@@ -29,4 +29,4 @@ class AccountInvoiceLine(models.Model):
     _inherit = 'account.invoice.line'
 
     price_unit = fields.Float(
-        digits_compute=dp.get_precision('GRAP Purchase Unit Price'))
+        digits=dp.get_precision('GRAP Purchase Unit Price'))

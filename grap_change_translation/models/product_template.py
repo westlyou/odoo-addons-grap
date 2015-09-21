@@ -2,7 +2,7 @@
 ##############################################################################
 #
 #    GRAP - Change Translation module for Odoo
-#    Copyright (C) 2013-2014 GRAP (http://www.grap.coop)
+#    Copyright (C) 2013-Today GRAP (http://www.grap.coop)
 #    @author Sylvain LE GAL (https://twitter.com/legalsylvain)
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -20,13 +20,16 @@
 #
 ##############################################################################
 
-from openerp.osv.orm import Model
-from openerp.osv import fields
+from openerp import models, fields
 
 
-class product_ul(Model):
-    _inherit = 'product.ul'
-    _columns = {
-        'name': fields.char(
-            'Name', size=64, select=True, required=True, translate=False),
-    }
+class ProductTemplate(models.Model):
+    _inherit = 'product.template'
+
+    name = fields.Char(translate=False)
+
+    description = fields.Char(translate=False)
+
+    description_purchase = fields.Char(translate=False)
+
+    description_sale = fields.Char(translate=False)
