@@ -8,11 +8,13 @@ Change some default data for GRAP
 Product Datas
 -------------
 Disable some unwished data by xml_id;
+
 * Disable product.product_category_1;
 
 Accouting Datas
 ---------------
 Change French Account Chart Template:
+
 * Disable 4011, 4017; make 401 a 'normal' account;
 * Disable 4111, 4117; make 411 a 'normal' account;
 
@@ -32,6 +34,7 @@ Change French Account Chart Template:
 Technical Information:
 ----------------------
 For that, add an 'active' field on models:
+
 * product.category;
 * account.account.template;
 

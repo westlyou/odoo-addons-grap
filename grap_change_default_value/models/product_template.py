@@ -1,7 +1,7 @@
 # -*- encoding: utf-8 -*-
 ##############################################################################
 #
-#    GRAP - Change Ir Values Module for Odoo
+#    GRAP - Change Default Value Module for Odoo
 #    Copyright (C) 2013-Today GRAP (http://www.grap.coop)
 #    @author Julien WESTE
 #    @author Sylvain LE GAL (https://twitter.com/legalsylvain)
@@ -21,4 +21,21 @@
 #
 ##############################################################################
 
-from . import product_template
+from openerp import models, fields, api
+
+
+class ProductTemplate(models.Model):
+    _inherit = 'product.template'
+
+    # Default Section
+    @api.model
+    def _get_uom_id(self):
+        if self._context.get('install_mode', False):
+            return super(ProductTemplate, self)._get_uom_id()
+        else:
+            return False
+
+    # Column Section
+    uom_id = fields.Many2one(default=_get_uom_id)
+
+    uom_po_id = fields.Many2one(default=_get_uom_id)

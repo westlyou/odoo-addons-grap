@@ -1,7 +1,7 @@
 # -*- encoding: utf-8 -*-
 ##############################################################################
 #
-#    GRAP - Change Ir Values Module for Odoo
+#    GRAP - Change Default Value Module for Odoo
 #    Copyright (C) 2013-Today GRAP (http://www.grap.coop)
 #    @author Julien WESTE
 #    @author Sylvain LE GAL (https://twitter.com/legalsylvain)
@@ -21,20 +21,20 @@
 #
 ##############################################################################
 
-from openerp.osv.orm import Model
-
-
-class product_template(Model):
-    _inherit = 'product.template'
-
-    def _get_uom_id(self, cr, uid, *args):
-        if args[0].get('install_mode', False):
-            return super(product_template, self)._get_uom_id(
-                cr, uid, *args)
-        else:
-            return False
-
-    _defaults = {
-        'uom_id': _get_uom_id,
-        'uom_po_id': _get_uom_id,
-    }
+{
+    'name': 'GRAP - Change Default Value',
+    'version': '8.0.2.0.0',
+    'category': 'GRAP - Custom',
+    'author': 'GRAP',
+    'website': 'http://www.grap.coop',
+    'depends': [
+        'mail',
+        'product',
+    ],
+    'data': [
+        'data/ir_values.yml',
+    ],
+    'demo': [
+        'demo/res_groups.yml',
+    ],
+}
