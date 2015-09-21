@@ -208,8 +208,7 @@
             <field name="model">grap.activity</field>
             <field name="arch" type="xml">
                 <search> 
-                   <field name="code"/>
-                   <field name="name"/>
+                   <field name="name" string="Name" filter_domain="['|',('code','ilike',self), ('name','ilike',self)]"/>
                    <field name="category_ids"/>
                    <field name="hr_interlocutor_id"/>
                    <field name="attendant_interlocutor_id"/>
