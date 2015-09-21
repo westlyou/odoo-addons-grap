@@ -31,6 +31,8 @@ install:
   - ln -s server_environment_files_sample ./server_environment_files
 
     # Custom Lines
+  - git clone https://github.com/grap/product-attribute.git -b 8.0_PORT_product_standard_price_vat_incl ${HOME}/product-attribute
+
 
 script:
   - travis_run_tests

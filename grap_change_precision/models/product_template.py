@@ -21,19 +21,14 @@
 ##############################################################################
 
 
-from openerp.osv.orm import Model
-from openerp.osv import fields
+from openerp import models, fields
 from openerp.addons import decimal_precision as dp
 
 
-class account_invoice_line(Model):
-    _inherit = 'account.invoice.line'
+class ProductTemplate(Model):
+    _inherit = 'product.template'
 
-    _columns = {
-        'price_unit': fields.float(
-            'Unit Price', required=True,
-            digits_compute=dp.get_precision('GRAP Purchase Unit Price')),
-        'discount': fields.float(
-            'Discount (%)',
-            digits_compute=dp.get_precision('GRAP Purchase Unit Discount')),
-    }
+    standard_price = fields.float(
+        digits_compute=dp.get_precision('GRAP Purchase Unit Price'))
+    standard_price_vat_incl = fields.float(
+        digits_compute=dp.get_precision('GRAP Purchase Unit Price'))

@@ -2,7 +2,7 @@
 ##############################################################################
 #
 #    GRAP - Change Precision module for Odoo
-#    Copyright (C) 2014 GRAP (http://www.grap.coop)
+#    Copyright (C) 2014-Today GRAP (http://www.grap.coop)
 #    @author Sylvain LE GAL (https://twitter.com/legalsylvain)
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -20,20 +20,22 @@
 #
 ##############################################################################
 
-
-from openerp.osv.orm import Model
-from openerp.osv import fields
-from openerp.addons import decimal_precision as dp
-
-
-class product_template(Model):
-    _inherit = 'product.template'
-
-    _columns = {
-        'standard_price': fields.float(
-            'Cost',
-            digits_compute=dp.get_precision('GRAP Purchase Unit Price')),
-        # 'standard_price_vat_incl': fields.float(
-        #    'Cost VAT Included',
-        #    digits_compute=dp.get_precision('GRAP Purchase Unit Price')),
-    }
+{
+    'name': 'GRAP - Change Precision',
+    'version': '8.0.2.0.0',
+    'summary': 'Change the precisions names and values of some fields',
+    'category': 'GRAP - Custom',
+    'author': 'GRAP',
+    'website': 'http://www.grap.coop',
+    'license': 'AGPL-3',
+    'depends': [
+        'stock',
+        'account',
+        'purchase',
+        'point_of_sale',
+        'product_standard_price_tax_included',
+    ],
+    'data': [
+        'data/decimal_precision.xml',
+    ],
+}

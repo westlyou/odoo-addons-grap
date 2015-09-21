@@ -1,8 +1,8 @@
 # -*- encoding: utf-8 -*-
 ##############################################################################
 #
-#    GRAP - Change Precision module for OpenERP
-#    Copyright (C) 2014 GRAP (http://www.grap.coop)
+#    GRAP - Change Precision module for Odoo
+#    Copyright (C) 2014-Today GRAP (http://www.grap.coop)
 #    @author Sylvain LE GAL (https://twitter.com/legalsylvain)
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -20,4 +20,14 @@
 #
 ##############################################################################
 
-from . import model
+
+from openerp import models, fields
+from openerp.addons import decimal_precision as dp
+
+
+class StockMove(models.Model):
+    _inherit = 'stock.move'
+
+    _columns = {
+    price_unit = fields.Float(
+        digits_compute=dp.get_precision('GRAP Purchase Unit Price'))

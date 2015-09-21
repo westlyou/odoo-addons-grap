@@ -2,7 +2,7 @@
 ##############################################################################
 #
 #    GRAP - Change Precision module for Odoo
-#    Copyright (C) 2014 GRAP (http://www.grap.coop)
+#    Copyright (C) 2014-Today GRAP (http://www.grap.coop)
 #    @author Sylvain LE GAL (https://twitter.com/legalsylvain)
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -21,19 +21,12 @@
 ##############################################################################
 
 
-from openerp.osv.orm import Model
-from openerp.osv import fields
+from openerp import models, fields
 from openerp.addons import decimal_precision as dp
 
 
-class pricelist_partnerinfo(Model):
-    _inherit = 'pricelist.partnerinfo'
+class PurchaseOrderLine(models.Model):
+    _inherit = 'purchase.order.line'
 
-    _columns = {
-        'price': fields.float(
-            'Unit Price', required=True,
-            digits_compute=dp.get_precision('GRAP Purchase Unit Price'),
-            help="""This price will be considered as a price for the"""
-            """ supplier Unit of Measure if any or the default Unit of"""
-            """ Measure of the product otherwise"""),
-    }
+    price_unit = fields.Float(
+        digits_compute=dp.get_precision('GRAP Purchase Unit Price'))
